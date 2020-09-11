@@ -1,33 +1,40 @@
 var playerLeft;
-var leftEnemies;
+var enemiesLeft = [];
 var leftBottom;
 var leftShot;
-let shotsfired = false;
 let leftScore = 0;
-gameStarted = false;
+let leftCounter = 0;
+let gameStarted = false;
+let shotsfired = false;
 leftcan = document.getElementById("canvas1");
 leftcanx = leftcan.getContext("2d");
 
 function startGame(type) {
-    if (type == 2) {
-        /*Toto bude multiplayer*/
-    } else if (type == 3) {
-        document.getElementById("canvas2").style.display = "none";
-        document.getElementById("gm1").style.float = "none";
-        document.getElementById("gm1").style.margin = "auto";
-    } else if (type == 1) {
-        /*toto je single*/
-        document.getElementById("gm2").style.display = "none";
-        document.getElementById("gm1").style.float = "none";
-        document.getElementById("gm1").style.margin = "auto";
+    switch (type) {
+        case 1:
+            /*Singleplayer*/
+            document.getElementById("gm2").style.display = "none";
+            document.getElementById("gm1").style.float = "none";
+            document.getElementById("gm1").style.margin = "auto";
+            break;
+        case 2:
+            /*Multiplayer*/
+            document.getElementById("canvas2").style.display = "none";
+            document.getElementById("gm1").style.float = "none";
+            document.getElementById("gm1").style.margin = "auto";
+            break;
+        case 3:
+            /*Coop*/
+
+            break;
+        case defaul:
+            break;
     }
-    /*Zde je vse*/
-    playerLeft = new component(20, 15, "blue", 241, 470);
-    leftEnemies = new component(30, 30, "red", Math.floor(Math.random() * 450) + 50, -40);
+    document.getElementById("btnstart").style.display = "none";
     leftBottom = new component(500, 3, "blue", 0, 497);
+    playerLeft = new component(20, 15, "blue", 241, 470);
     gameLeft.start();
     gameStarted = true;
-    document.getElementById("btnstart").style.display = "none";
 }
 
 var gameLeft = {
@@ -36,6 +43,7 @@ var gameLeft = {
         this.canvas.width = 500;
         this.canvas.height = 500;
         this.context = this.canvas.getContext("2d");
+        this.frameNo = 0;
         this.interval = setInterval(updateGameArea, 20);
     },
     clear: function () {
@@ -72,10 +80,7 @@ function component(width, height, color, x, y) {
         var othertop = otherobj.y;
         var otherbottom = otherobj.y + (otherobj.height);
         var crash = true;
-        if ((mybottom < othertop) ||
-            (mytop > otherbottom) ||
-            (myright < otherleft) ||
-            (myleft > otherright)) {
+        if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
             crash = false;
         }
         return crash;
@@ -83,42 +88,63 @@ function component(width, height, color, x, y) {
 }
 
 function updateGameArea() {
-    if (playerLeft.crashWith(leftEnemies)) {
-        gameLeft.stop();
-        gameStarted = false;
-        console.log("Fail");
-        leftcanx.font = "20px Segoe UI";
-        leftcanx.textAlign = "center";
-        leftcanx.fillText("GAME OVER", leftcan.width / 2, leftcan.height / 2);
-        leftcanx.fillText("Your Score: " + leftScore, leftcan.width / 2, leftcan.height / 1.7);
-        leftcanx.fillText("ENTER to Retry", leftcan.width / 2, leftcan.height / 1.5);
-    } else if (leftBottom.crashWith(leftEnemies)) {
-        gameLeft.stop();
-        gameStarted = false;
-        console.log("Fail");
-        leftcanx.font = "20px Segoe UI";
-        leftcanx.textAlign = "center";
-        leftcanx.fillText("GAME OVER", leftcan.width / 2, leftcan.height / 2);
-        leftcanx.fillText("Your Score: " + leftScore, leftcan.width / 2, leftcan.height / 1.7);
-        leftcanx.fillText("ENTER to Retry", leftcan.width / 2, leftcan.height / 1.5);
-    } else {
-        gameLeft.clear();
-        playerLeft.newPos();
-        playerLeft.update();
-        leftEnemies.y += +1.5;
-        leftEnemies.update();
+    console.log("ge")
+    for (i = 0; i < enemiesLeft.length; i += 1) {
+        if (playerLeft.crashWith(enemiesLeft[i]) && gameStarted == true) {
+            gameLeft.stop();
+            gameStarted = false;
+            leftcanx.font = "20px Segoe UI";
+            leftcanx.textAlign = "center";
+            leftcanx.fillText("GAME OVER", leftcan.width / 2, leftcan.height / 2);
+            leftcanx.fillText("Your Score: " + leftScore, leftcan.width / 2, leftcan.height / 1.7);
+            leftcanx.fillText("ENTER to Retry", leftcan.width / 2, leftcan.height / 1.5);
+        }
+    }
+    for (i = 0; i < enemiesLeft.length; i += 1) {
+        if (leftBottom.crashWith(enemiesLeft[i]) && gameStarted == true) {
+            gameLeft.stop();
+            gameStarted = false;
+            console.log("Fail");
+            leftcanx.font = "20px Segoe UI";
+            leftcanx.textAlign = "center";
+            leftcanx.fillText("GAME OVER", leftcan.width / 2, leftcan.height / 2);
+            leftcanx.fillText("Your Score: " + leftScore, leftcan.width / 2, leftcan.height / 1.7);
+            leftcanx.fillText("ENTER to Retry", leftcan.width / 2, leftcan.height / 1.5);
+        }
+    }
+    for (i = 0; i < enemiesLeft.length; i += 1) {
+        if (gameStarted == true && shotsfired == true && leftShot.crashWith(enemiesLeft[i])) {
+            enemiesLeft[i].y = -40;
+            enemiesLeft[i].x = Math.floor(Math.random() * 450) + 50;
+            leftShot.y = -100;
+            leftScore++;
+            document.getElementById("scoreboard1").innerHTML = "Score: " + leftScore;
+        }
+    }
+    gameLeft.clear();
+    gameLeft.frameNo += 1;
+    if ((gameLeft.frameNo == 1 || everyinterval(150)) && enemiesLeft.length < 3) {
+        enemiesLeft.push(new component(30, 30, "red", Math.floor(Math.random() * 450) + 50, -40));
+    }
+    for (i = 0; i < enemiesLeft.length; i += 1) {
+        enemiesLeft[i].y += +1.5;
+        enemiesLeft[i].update();
+    }
+    if (shotsfired == true) {
         leftShot.y += -3;
         leftShot.update();
-        leftBottom.update();
     }
-    if (leftShot.crashWith(leftEnemies) || shotsfired == false) {
-        leftEnemies.y = -40;
-        leftEnemies.x = Math.floor(Math.random() * 450) + 50;
-        leftShot.y = -100;
-        leftScore ++;
-        document.getElementById("scoreboard1").innerHTML = "Score: " + leftScore;
-    }
+    playerLeft.newPos();
+    playerLeft.update();
 }
+
+function everyinterval(n) {
+    if ((gameLeft.frameNo / n) % 1 == 0) {
+        return true;
+    }
+    return false;
+}
+
 document.onkeydown = function movement(key) {
     if (gameStarted == true) {
         switch (key.keyCode) {
