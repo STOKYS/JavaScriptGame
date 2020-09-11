@@ -1,6 +1,9 @@
 var playerLeft;
 var leftEnemies;
 var leftBottom;
+var leftShot;
+let shotsfired = false;
+let leftScore = 0;
 gameStarted = false;
 leftcan = document.getElementById("canvas1");
 leftcanx = leftcan.getContext("2d");
@@ -20,7 +23,7 @@ function startGame(type) {
     }
     /*Zde je vse*/
     playerLeft = new component(20, 15, "blue", 241, 470);
-    leftEnemies = new component(30, 30, "red", 300, 120);
+    leftEnemies = new component(30, 30, "red", Math.floor(Math.random() * 450) + 50, -40);
     leftBottom = new component(500, 3, "blue", 0, 497);
     gameLeft.start();
     gameStarted = true;
@@ -87,6 +90,7 @@ function updateGameArea() {
         leftcanx.font = "20px Segoe UI";
         leftcanx.textAlign = "center";
         leftcanx.fillText("GAME OVER", leftcan.width / 2, leftcan.height / 2);
+        leftcanx.fillText("Your Score: " + leftScore, leftcan.width / 2, leftcan.height / 1.7);
         leftcanx.fillText("ENTER to Retry", leftcan.width / 2, leftcan.height / 1.5);
     } else if (leftBottom.crashWith(leftEnemies)) {
         gameLeft.stop();
@@ -95,38 +99,48 @@ function updateGameArea() {
         leftcanx.font = "20px Segoe UI";
         leftcanx.textAlign = "center";
         leftcanx.fillText("GAME OVER", leftcan.width / 2, leftcan.height / 2);
+        leftcanx.fillText("Your Score: " + leftScore, leftcan.width / 2, leftcan.height / 1.7);
         leftcanx.fillText("ENTER to Retry", leftcan.width / 2, leftcan.height / 1.5);
     } else {
         gameLeft.clear();
         playerLeft.newPos();
         playerLeft.update();
-        leftEnemies.y += +1;
+        leftEnemies.y += +1.5;
         leftEnemies.update();
+        leftShot.y += -3;
+        leftShot.update();
         leftBottom.update();
     }
+    if (leftShot.crashWith(leftEnemies) || shotsfired == false) {
+        leftEnemies.y = -40;
+        leftEnemies.x = Math.floor(Math.random() * 450) + 50;
+        leftShot.y = -100;
+        leftScore ++;
+        document.getElementById("scoreboard1").innerHTML = "Score: " + leftScore;
+    }
 }
-
 document.onkeydown = function movement(key) {
     if (gameStarted == true) {
         switch (key.keyCode) {
             case 65:
                 console.log('A');
-                playerLeft.speedX = -1;
+                playerLeft.speedX = -2;
                 break;
             case 87:
                 console.log('W');
-                playerLeft.speedY = -1;
+                playerLeft.speedY = -2;
                 break;
             case 68:
                 console.log('D');
-                playerLeft.speedX = 1;
+                playerLeft.speedX = 2;
                 break;
             case 83:
                 console.log('S');
-                playerLeft.speedY = 1;
+                playerLeft.speedY = 2;
                 break;
             case 32:
-                console.log('Left Shoot');
+                shotsfired = true;
+                leftShot = new component(3, 10, "blue", playerLeft.x + 10, playerLeft.y - 10);
                 break;
         }
     } else if (key.keyCode == 13 && gameStarted != true) {
