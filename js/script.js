@@ -1,16 +1,18 @@
 var playerLeft;
 var leftEnemies;
-
+var leftBottom;
 gameStarted = false;
+leftcan = document.getElementById("canvas1");
+leftcanx = leftcan.getContext("2d");
 
 function startGame(type) {
     if (type == 2) {
         /*Toto bude multiplayer*/
-    }else if (type == 3){
+    } else if (type == 3) {
         document.getElementById("canvas2").style.display = "none";
         document.getElementById("gm1").style.float = "none";
         document.getElementById("gm1").style.margin = "auto";
-    }else if (type == 1){
+    } else if (type == 1) {
         /*toto je single*/
         document.getElementById("gm2").style.display = "none";
         document.getElementById("gm1").style.float = "none";
@@ -19,6 +21,7 @@ function startGame(type) {
     /*Zde je vse*/
     playerLeft = new component(20, 15, "blue", 241, 470);
     leftEnemies = new component(30, 30, "red", 300, 120);
+    leftBottom = new component(500, 3, "blue", 0, 497);
     gameLeft.start();
     gameStarted = true;
     document.getElementById("btnstart").style.display = "none";
@@ -34,6 +37,9 @@ var gameLeft = {
     },
     clear: function () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    },
+    stop: function () {
+        clearInterval(this.interval);
     }
 }
 
@@ -53,13 +59,51 @@ function component(width, height, color, x, y) {
         this.x += this.speedX;
         this.y += this.speedY;
     }
+    this.crashWith = function (otherobj) {
+        var myleft = this.x;
+        var myright = this.x + (this.width);
+        var mytop = this.y;
+        var mybottom = this.y + (this.height);
+        var otherleft = otherobj.x;
+        var otherright = otherobj.x + (otherobj.width);
+        var othertop = otherobj.y;
+        var otherbottom = otherobj.y + (otherobj.height);
+        var crash = true;
+        if ((mybottom < othertop) ||
+            (mytop > otherbottom) ||
+            (myright < otherleft) ||
+            (myleft > otherright)) {
+            crash = false;
+        }
+        return crash;
+    }
 }
 
 function updateGameArea() {
-    gameLeft.clear();
-    playerLeft.newPos();
-    playerLeft.update();
-    leftEnemies.update();
+    if (playerLeft.crashWith(leftEnemies)) {
+        gameLeft.stop();
+        gameStarted = false;
+        console.log("Fail");
+        leftcanx.font = "20px Segoe UI";
+        leftcanx.textAlign = "center";
+        leftcanx.fillText("GAME OVER", leftcan.width / 2, leftcan.height / 2);
+        leftcanx.fillText("ENTER to Retry", leftcan.width / 2, leftcan.height / 1.5);
+    } else if (leftBottom.crashWith(leftEnemies)) {
+        gameLeft.stop();
+        gameStarted = false;
+        console.log("Fail");
+        leftcanx.font = "20px Segoe UI";
+        leftcanx.textAlign = "center";
+        leftcanx.fillText("GAME OVER", leftcan.width / 2, leftcan.height / 2);
+        leftcanx.fillText("ENTER to Retry", leftcan.width / 2, leftcan.height / 1.5);
+    } else {
+        gameLeft.clear();
+        playerLeft.newPos();
+        playerLeft.update();
+        leftEnemies.y += +1;
+        leftEnemies.update();
+        leftBottom.update();
+    }
 }
 
 document.onkeydown = function movement(key) {
