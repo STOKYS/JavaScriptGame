@@ -25,3 +25,7 @@ canvas {
 #btnstart{
     margin: auto;
 }
+
+body{
+    background-color: rgb(200, 175, 150);
+}
