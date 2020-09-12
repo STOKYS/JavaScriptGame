@@ -13,10 +13,6 @@ let gameStarted = false;
 let shotsfired = false;
 let difficulty = 3;
 let isMulti = false;
-leftcan = document.getElementById("canvas1");
-leftcanx = leftcan.getContext("2d");
-rightcan = document.getElementById("canvas2");
-rightcanx = rightcan.getContext("2d");
 
 document.getElementById("btneasy").addEventListener("click", function () {
     difficulty = 2;
@@ -54,7 +50,7 @@ function startGame(type) {
     playerLeft = new component(20, 15, "blue", 241, 470);
     gameLeft.start();
     gameStarted = true;
-    if(isMulti == true){
+    if (isMulti == true) {
         rightBottom = new component(500, 3, "green", 0, 497);
         playerRight = new component(20, 15, "green", 241, 470);
         gameRight.start();
@@ -67,15 +63,15 @@ var gameLeft = {
         this.canvasLeft.width = 500;
         this.canvasLeft.height = 500;
         this.context = this.canvasLeft.getContext("2d");
-        if (isMulti == false){
-            this.interval = setInterval(updateGameArea, 20);
+        if (isMulti == false) {
+            this.intervalLeft = setInterval(updateGameArea, 20);
         }
     },
     clear: function () {
         this.context.clearRect(0, 0, this.canvasLeft.width, this.canvasLeft.height);
     },
     stop: function () {
-        clearInterval(this.interval);
+        clearInterval(this.intervalLeft);
     }
 }
 
@@ -85,13 +81,13 @@ var gameRight = {
         this.canvasRight.width = 500;
         this.canvasRight.height = 500;
         this.context = this.canvasRight.getContext("2d");
-        this.interval = setInterval(updateGameArea, 20);
+        this.intervalRight = setInterval(updateGameArea, 20);
     },
     clear: function () {
         this.context.clearRect(0, 0, this.canvasRight.width, this.canvasRight.height);
     },
     stop: function () {
-        clearInterval(this.interval);
+        clearInterval(this.intervalRight);
     }
 }
 
@@ -143,25 +139,18 @@ function updateGameArea() {
     }
     for (i = 0; i < enemiesLeft.length; i += 1) {
         if (playerLeft.crashWith(enemiesLeft[i]) && gameStarted == true) {
-            gameLeft.stop();
             gameStarted = false;
-            leftcanx.font = "20px Segoe UI";
-            leftcanx.textAlign = "center";
-            leftcanx.fillText("GAME OVER", leftcan.width / 2, leftcan.height / 2);
-            leftcanx.fillText("Your Score: " + leftScore, leftcan.width / 2, leftcan.height / 1.7);
-            leftcanx.fillText("ENTER to Retry", leftcan.width / 2, leftcan.height / 1.5);
+            gameLeft.stop();
+            gameRight.stop();
+            end(1);
         }
     }
     for (i = 0; i < enemiesLeft.length; i += 1) {
         if (leftBottom.crashWith(enemiesLeft[i]) && gameStarted == true) {
-            gameLeft.stop();
             gameStarted = false;
-            console.log("Fail");
-            leftcanx.font = "20px Segoe UI";
-            leftcanx.textAlign = "center";
-            leftcanx.fillText("GAME OVER", leftcan.width / 2, leftcan.height / 2);
-            leftcanx.fillText("Your Score: " + leftScore, leftcan.width / 2, leftcan.height / 1.7);
-            leftcanx.fillText("ENTER to Retry", leftcan.width / 2, leftcan.height / 1.5);
+            gameLeft.stop();
+            gameRight.stop();
+            end(1);
         }
     }
     for (i = 0; i < enemiesLeft.length; i += 1) {
@@ -197,25 +186,18 @@ function updateGameArea() {
         }
         for (k = 0; k < enemiesRight.length; k += 1) {
             if (playerRight.crashWith(enemiesRight[k]) && gameStarted == true) {
-                gameRight.stop();
                 gameStarted = false;
-                rightcanx.font = "20px Segoe UI";
-                rightcanx.textAlign = "center";
-                rightcanx.fillText("GAME OVER", rightcan.width / 2, rightcan.height / 2);
-                rightcanx.fillText("Your Score: " + rightScore, rightcan.width / 2, rightcan.height / 1.7);
-                rightcanx.fillText("ENTER to Retry", rightcan.width / 2, rightcan.height / 1.5);
+                gameRight.stop();
+                gameLeft.stop();
+                end(2);
             }
         }
         for (k = 0; k < enemiesRight.length; k += 1) {
             if (rightBottom.crashWith(enemiesRight[k]) && gameStarted == true) {
-                gameRight.stop();
                 gameStarted = false;
-                console.log("Fail");
-                rightcanx.font = "20px Segoe UI";
-                rightcanx.textAlign = "center";
-                rightcanx.fillText("GAME OVER", rightcan.width / 2, rightcan.height / 2);
-                rightcanx.fillText("Your Score: " + rightScore, rightcan.width / 2, rightcan.height / 1.7);
-                rightcanx.fillText("ENTER to Retry", rightcan.width / 2, rightcan.height / 1.5);
+                gameRight.stop();
+                gameLeft.stop();
+                end(2);
             }
         }
         for (k = 0; k < enemiesRight.length; k += 1) {
@@ -242,6 +224,41 @@ function updateGameArea() {
         }
         playerRight.newPos();
         playerRight.updateRight();
+    }
+}
+
+var canvasL = document.getElementById("canvas1");
+var contextL = canvasL.getContext("2d");
+var canvasR = document.getElementById("canvas2");
+var contextR = canvasR.getContext("2d");
+
+function end(ending) {
+    console.log(ending + " " + isMulti)
+    if (isMulti == true) {
+        switch (ending) {
+            case 1:
+                document.getElementById("looser").innerHTML = "LEFT LOST, RIGHT WON"
+                document.getElementById("scorefin").innerHTML = "Left Score: " + leftScore + "; Right Score: " + rightScore
+                break;
+            case 2:
+                /*Multiplayer right loose*/
+                document.getElementById("looser").innerHTML = "LEFT WON, RIGHT LOST"
+                document.getElementById("scorefin").innerHTML = "Left Score: " + leftScore + "; Right Score: " + rightScore
+                break;
+        }
+    } else {
+        switch (ending) {
+            case 1:
+                document.getElementById("scorefin").innerHTML = "Your Score: " + leftScore
+                break;
+        }
+    }
+    document.getElementById("retry").style.display = "inline"
+    document.getElementById("game").style.filter = "blur(20px)"
+    document.onkeydown = function movement(keyFin) {
+        if (keyFin.keyCode == 13) {
+            location.reload();
+        }
     }
 }
 
@@ -289,7 +306,7 @@ document.onkeydown = function movement(key) {
                     break;
                 case 96:
                     shotsfired = true;
-                    rightShot.push(new component(3, 10, "blue", playerRight.x + 10, playerRight.y - 10));
+                    rightShot.push(new component(3, 10, "green", playerRight.x + 10, playerRight.y - 10));
                     break;
             }
         }

@@ -7,24 +7,38 @@
 </head>
 
 <body>
-    <h1>Game</h1>
-    <div id="game">
-        <div id="gm1">
-            <p id="scoreboard1">Score: 0</p>
-            <canvas id="canvas1"></canvas>
+    <header>
+        <h1>JavaScriptGame</h1>
+    </header>
+    <main>
+        <div id="retry">
+            <h2 id="looser">YOU HAVE LOST</h2>
+            <h3 id="scorefin"></h3>
+            <h4>Press ENTER to retry</h4>
         </div>
-        <div id="gm2">
-            <p id="scoreboard2">Score: 0</p>
-            <canvas id="canvas2"></canvas>
+        <div id="game">
+            <div id="gm1">
+                <p id="scoreboard1">Score: 0</p>
+                <canvas id="canvas1"></canvas>
+            </div>
+            <div id="gm2">
+                <p id="scoreboard2">Score: 0</p>
+                <canvas id="canvas2"></canvas>
+            </div>
+            <p id="btnstart">Press ENTER to start, BACKSPACE for multiplayer, SHIFT for Co-op</p>
+            <div>
+                <p id="difftext">Current difficulty: Medium</p>
+                <div id="btngroup">
+                    <button id="btneasy">EASY</button>
+                    <button id="btnmed">MEDIUM</button>
+                    <button id="btnhard">HARD</button>
+                </div>
+            </div>
         </div>
-        <p id="btnstart">Press ENTER to start, BACKSPACE for multiplayer, SHIFT for multiplayer in one window</p>
-        <p id="difftext"> Current difficulty: Medium</p>
-        <div id="btngroup">
-            <button id="btneasy">EASY</button>
-            <button id="btnmed">MEDIUM</button>
-            <button id="btnhard">HARD</button>
-          </div>
-    </div>
+    </main>
+    <footer>
+        <p>David Stoček</p>
+    </footer>
     <script src="js/script.js"></script>
 </body>
 
