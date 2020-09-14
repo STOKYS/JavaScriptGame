@@ -1,2 +1,2 @@
-# JavaSctiptGame
+# JavaScriptGame
  

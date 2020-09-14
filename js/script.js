@@ -11,20 +11,47 @@ var rightShot = [];
 let rightScore = 0;
 let gameStarted = false;
 let shotsfired = false;
-let difficulty = 3;
+let difficulty = 4;
+let eneSpeed = 1;
+let playerSpeed = 2;
 let isMulti = false;
 
-document.getElementById("btneasy").addEventListener("click", function () {
+window.addEventListener("keydown", function(e) {
+    // space and arrow keys
+    if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+        e.preventDefault();
+    }
+}, false);
+
+document.getElementById("btnpeace").addEventListener("click", function () {
     difficulty = 2;
+    eneSpeed = 0.66;
+    playerSpeed = 2.25;
+    document.getElementById("difftext").innerHTML = "Current difficulty: Peaceful";
+});
+document.getElementById("btneasy").addEventListener("click", function () {
+    difficulty = 3;
+    eneSpeed = 0.80;
+    playerSpeed = 2;
     document.getElementById("difftext").innerHTML = "Current difficulty: Easy";
 });
 document.getElementById("btnmed").addEventListener("click", function () {
-    difficulty = 3;
+    difficulty = 4;
+    eneSpeed = 1;
+    playerSpeed = 2;
     document.getElementById("difftext").innerHTML = "Current difficulty: Medium";
 });
 document.getElementById("btnhard").addEventListener("click", function () {
-    difficulty = 4;
+    difficulty = 5;
+    eneSpeed = 1.5;
+    playerSpeed = 2;
     document.getElementById("difftext").innerHTML = "Current difficulty: Hard";
+});
+document.getElementById("btndark").addEventListener("click", function () {
+    difficulty = 6;
+    eneSpeed = 1.8;
+    playerSpeed = 1.8;
+    document.getElementById("difftext").innerHTML = "Current difficulty: Dark Souls";
 });
 
 function startGame(type) {
@@ -37,10 +64,6 @@ function startGame(type) {
             break;
         case 2:
             isMulti = true;
-            break;
-        case 3:
-            /*Coop*/
-
             break;
     }
     document.getElementById("btnstart").style.display = "none";
@@ -166,7 +189,7 @@ function updateGameArea() {
     }
     gameLeft.clear();
     for (i = 0; i < enemiesLeft.length; i += 1) {
-        enemiesLeft[i].y += +1.5;
+        enemiesLeft[i].y += eneSpeed;
         enemiesLeft[i].updateLeft();
     }
     for (u = 0; u < leftShot.length; u += 1) {
@@ -213,7 +236,7 @@ function updateGameArea() {
         }
         gameRight.clear();
         for (k = 0; k < enemiesRight.length; k += 1) {
-            enemiesRight[k].y += +1.5;
+            enemiesRight[k].y += eneSpeed;
             enemiesRight[k].updateRight();
         }
         for (j = 0; j < rightShot.length; j += 1) {
@@ -267,19 +290,19 @@ document.onkeydown = function movement(key) {
         switch (key.keyCode) {
             case 65:
                 console.log('A');
-                playerLeft.speedX = -2;
+                playerLeft.speedX = -(playerSpeed);
                 break;
             case 87:
                 console.log('W');
-                playerLeft.speedY = -2;
+                playerLeft.speedY = -(playerSpeed);
                 break;
             case 68:
                 console.log('D');
-                playerLeft.speedX = 2;
+                playerLeft.speedX = playerSpeed;
                 break;
             case 83:
                 console.log('S');
-                playerLeft.speedY = 2;
+                playerLeft.speedY = playerSpeed;
                 break;
             case 32:
                 shotsfired = true;
@@ -290,19 +313,19 @@ document.onkeydown = function movement(key) {
             switch (key.keyCode) {
                 case 37:
                     console.log('A');
-                    playerRight.speedX = -2;
+                    playerRight.speedX = -(playerSpeed);
                     break;
                 case 38:
                     console.log('W');
-                    playerRight.speedY = -2;
+                    playerRight.speedY = -(playerSpeed);
                     break;
                 case 39:
                     console.log('D');
-                    playerRight.speedX = 2;
+                    playerRight.speedX = playerSpeed;
                     break;
                 case 40:
                     console.log('S');
-                    playerRight.speedY = 2;
+                    playerRight.speedY = playerSpeed;
                     break;
                 case 96:
                     shotsfired = true;
@@ -314,8 +337,6 @@ document.onkeydown = function movement(key) {
         startGame(1)
     } else if (key.keyCode == 8 && gameStarted != true) {
         startGame(2)
-    } else if (key.keyCode == 16 && gameStarted != true) {
-        startGame(3)
     }
 }
 

@@ -4,6 +4,10 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style/style.css">
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>
+        JavaScriptGame
+    </title>
 </head>
 
 <body>
@@ -13,7 +17,7 @@
     <main>
         <div id="retry">
             <h2 id="looser">YOU HAVE LOST</h2>
-            <h3 id="scorefin"></h3>
+            <h3 id="scorefin">Score</h3>
             <h4>Press ENTER to retry</h4>
         </div>
         <div id="game">
@@ -25,14 +29,68 @@
                 <p id="scoreboard2">Score: 0</p>
                 <canvas id="canvas2"></canvas>
             </div>
-            <p id="btnstart">Press ENTER to start, BACKSPACE for multiplayer, SHIFT for Co-op</p>
+            <p id="btnstart">Press ENTER to start, BACKSPACE for multiplayer</p>
             <div>
                 <p id="difftext">Current difficulty: Medium</p>
                 <div id="btngroup">
-                    <button id="btneasy">EASY</button>
-                    <button id="btnmed">MEDIUM</button>
-                    <button id="btnhard">HARD</button>
+                    <button id="btnpeace"><abbr
+                            title="Number of enemies: 2, Enemy speed: 0.66, Player Speed: 2.25">PEACEFUL</abbr></button>
+                    <button id="btneasy"><abbr
+                            title="Number of enemies: 3, Enemy speed: 0.80, Player Speed: 2">EASY</abbr></button>
+                    <button id="btnmed"><abbr
+                            title="Number of enemies: 4, Enemy speed: 1, Player Speed: 2">MEDIUM</abbr></button>
+                    <button id="btnhard"><abbr
+                            title="Number of enemies: 5, Enemy speed: 1.5, Player Speed: 2">HARD</abbr></button>
+                    <button id="btndark"><abbr title="Number of enemies: 6, Enemy speed: 1.8 Player Speed: 1.8">DARK
+                            SOULS</abbr></button>
                 </div>
+            </div>
+        </div>
+        <div class="info">
+            <h2>Game</h2>
+            <div class="game">
+
+            </div>
+            <hr class="linebig">
+            <h2>Controls</h2>
+            <div class="controls">
+
+            </div>
+            <hr class="linebig">
+            <h2>Features</h2>
+            <div class="features">
+
+            </div>
+            <hr class="linebig">
+            <h2>Changelog</h2>
+            <div class="changelog">
+                <hr class="line">
+                <li>Update v20.0914:20
+                    <ul>--------------------ADDITIONS--------------------</ul>
+                    <ul>- Added Changelog in info</ul>
+                    <ul>- Added Features chapter in info</ul>
+                    <ul>- Added Controls chapter in info</ul>
+                    <ul>- Added Game chapter in info</ul>
+                    <ul>- Added new difficulties (Peaceful and Dark Souls)</ul>
+                    <ul>--------------------UPDATES--------------------</ul>
+                    <ul>- Updated difficulties (difficulties now change enemy and player speed)</ul>
+                    <ul>- Updated README.md</ul>
+                    <ul>- Updated styles</ul>
+                    <ul>- Updated web</ul>
+                    <ul>--------------------REMOVES--------------------</ul>
+                    <ul>- Removed Co-op mode</ul>
+                    <ul>- Removed arrow page controls</ul>
+                </li>
+                <hr class="line">
+                <li>Updates before
+                    <ul>--------------------ADDITIONS--------------------</ul>
+                    <ul>- Game</ul>
+                    <ul>--------------------UPDATES--------------------</ul>
+                    <ul>- My Life</ul>
+                    <ul>--------------------REMOVES--------------------</ul>
+                    <ul>- My free time</ul>
+                </li>
+                <hr class="line">
             </div>
         </div>
     </main>
@@ -41,4 +99,5 @@
     </footer>
     <script src="js/script.js"></script>
 </body>
+
 </html>
