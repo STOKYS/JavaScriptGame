@@ -2,6 +2,7 @@ var playerLeft;
 var playerRight;
 var enemiesLeft = [];
 var enemiesRight = [];
+var 
 var leftBottom;
 var rightBottom;
 var leftShot = [];
@@ -15,6 +16,7 @@ let difficulty = 4;
 let eneSpeed = 1;
 let playerSpeed = 2;
 let isMulti = false;
+let pointsToWin = 100;
 
 window.addEventListener("keydown", function(e) {
     // space and arrow keys
@@ -54,6 +56,40 @@ document.getElementById("btndark").addEventListener("click", function () {
     document.getElementById("difftext").innerHTML = "Current difficulty: Dark Souls";
 });
 
+
+
+document.getElementById("btndisabled").addEventListener("click", function () {
+    pointsToWin = 9999;
+    document.getElementById("difftextscore").innerHTML = "Current win on score: Disabled";
+    document.getElementById("scoreboard1").innerHTML = "Score: 0"
+    document.getElementById("scoreboard2").innerHTML = "Score: 0"
+});
+document.getElementById("btn50").addEventListener("click", function () {
+    pointsToWin = 50;
+    document.getElementById("difftextscore").innerHTML = "Current win on score: 50";
+    document.getElementById("scoreboard1").innerHTML = "Score: 0/" + pointsToWin;
+    document.getElementById("scoreboard2").innerHTML = "Score: 0/" + pointsToWin;
+});
+document.getElementById("btn100").addEventListener("click", function () {
+    pointsToWin = 100;
+    document.getElementById("difftextscore").innerHTML = "Current win on score: 100";
+    document.getElementById("scoreboard1").innerHTML = "Score: 0/" + pointsToWin;
+    document.getElementById("scoreboard2").innerHTML = "Score: 0/" + pointsToWin;
+});
+document.getElementById("btn200").addEventListener("click", function () {
+    pointsToWin = 200;
+    document.getElementById("difftextscore").innerHTML = "Current win on score: 200";
+    document.getElementById("scoreboard1").innerHTML = "Score: 0/" + pointsToWin;
+    document.getElementById("scoreboard2").innerHTML = "Score: 0/" + pointsToWin;
+});
+document.getElementById("btncustom").addEventListener("click", function () {
+    pointsToWin = document.getElementById("customvalue").value;
+    document.getElementById("difftextscore").innerHTML = "Current win on score: " + pointsToWin;
+    document.getElementById("scoreboard1").innerHTML = "Score: 0/" + pointsToWin;
+    document.getElementById("scoreboard2").innerHTML = "Score: 0/" + pointsToWin;
+});
+
+
 function startGame(type) {
     switch (type) {
         case 1:
@@ -67,8 +103,11 @@ function startGame(type) {
             break;
     }
     document.getElementById("btnstart").style.display = "none";
-    document.getElementById("btngroup").style.display = "none";
+    document.getElementById("btngroup1").style.display = "none";
+    document.getElementById("btngroup2").style.display = "none";
+    document.getElementById("form").style.display = "none";
     document.getElementById("difftext").style.display = "none";
+    document.getElementById("difftextscore").style.display = "none";
     leftBottom = new component(500, 3, "blue", 0, 497);
     playerLeft = new component(20, 15, "blue", 241, 470);
     gameLeft.start();
@@ -156,9 +195,27 @@ function updateGameArea() {
     Counter++;
     if (Counter == 201 && enemiesLeft.length < difficulty) {
         Counter = 1;
-        enemiesLeft.push(new component(30, 30, "red", Math.floor(Math.random() * 500), -40));
+        enemiesLeft.push(new component(30, 30, "red", Math.floor(Math.random() * 441) + 30, -40));
     } else if (Counter == 1) {
-        enemiesLeft.push(new component(30, 30, "red", Math.floor(Math.random() * 500), -40));
+        enemiesLeft.push(new component(30, 30, "red", Math.floor(Math.random() * 441) + 30, -40));
+    }
+    if (pointsToWin == rightScore && isMulti == true) {
+        gameStarted = false;
+        gameRight.stop();
+        gameLeft.stop();
+        end(1);
+    }
+    if (pointsToWin == leftScore && isMulti == true) {
+        gameStarted = false;
+        gameRight.stop();
+        gameLeft.stop();
+        end(2);
+    }
+    if (pointsToWin == leftScore && isMulti == false){
+        gameStarted = false;
+        gameRight.stop();
+        gameLeft.stop();
+        end(2);
     }
     for (i = 0; i < enemiesLeft.length; i += 1) {
         if (playerLeft.crashWith(enemiesLeft[i]) && gameStarted == true) {
@@ -180,10 +237,10 @@ function updateGameArea() {
         for (u = 0; u < leftShot.length; u += 1) {
             if (gameStarted == true && shotsfired == true && leftShot[u].crashWith(enemiesLeft[i])) {
                 enemiesLeft[i].y = -40;
-                enemiesLeft[i].x = Math.floor(Math.random() * 450) + 50;
+                enemiesLeft[i].x = Math.floor(Math.random() * 441) + 30;
                 leftShot[u].y = -100;
                 leftScore++;
-                document.getElementById("scoreboard1").innerHTML = "Score: " + leftScore;
+                document.getElementById("scoreboard1").innerHTML = "Score: " + leftScore + "/" + pointsToWin;
             }
         }
     }
@@ -203,9 +260,9 @@ function updateGameArea() {
     if (isMulti == true) {
         if (Counter == 201 && enemiesRight.length < difficulty) {
             Counter = 1;
-            enemiesRight.push(new component(30, 30, "red", Math.floor(Math.random() * 500), -40));
+            enemiesRight.push(new component(30, 30, "red", Math.floor(Math.random() * 441) + 30, -40));
         } else if (Counter == 1) {
-            enemiesRight.push(new component(30, 30, "red", Math.floor(Math.random() * 500), -40));
+            enemiesRight.push(new component(30, 30, "red", Math.floor(Math.random() * 441) + 30, -40));
         }
         for (k = 0; k < enemiesRight.length; k += 1) {
             if (playerRight.crashWith(enemiesRight[k]) && gameStarted == true) {
@@ -227,10 +284,10 @@ function updateGameArea() {
             for (j = 0; j < rightShot.length; j += 1) {
                 if (gameStarted == true && shotsfired == true && rightShot[j].crashWith(enemiesRight[k])) {
                     enemiesRight[k].y = -40;
-                    enemiesRight[k].x = Math.floor(Math.random() * 450) + 50;
+                    enemiesRight[k].x = Math.floor(Math.random() * 441) + 30;
                     rightShot[j].y = -100;
                     rightScore++;
-                    document.getElementById("scoreboard2").innerHTML = "Score: " + rightScore;
+                    document.getElementById("scoreboard2").innerHTML = "Score: " + rightScore + "/" + pointsToWin;
                 }
             }
         }
@@ -250,11 +307,6 @@ function updateGameArea() {
     }
 }
 
-var canvasL = document.getElementById("canvas1");
-var contextL = canvasL.getContext("2d");
-var canvasR = document.getElementById("canvas2");
-var contextR = canvasR.getContext("2d");
-
 function end(ending) {
     console.log(ending + " " + isMulti)
     if (isMulti == true) {
@@ -272,6 +324,10 @@ function end(ending) {
     } else {
         switch (ending) {
             case 1:
+                document.getElementById("scorefin").innerHTML = "Your Score: " + leftScore
+                break;
+            case 2:
+                document.getElementById("looser").innerHTML = "YOU WON"
                 document.getElementById("scorefin").innerHTML = "Your Score: " + leftScore
                 break;
         }
