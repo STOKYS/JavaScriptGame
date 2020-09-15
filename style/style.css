@@ -16,8 +16,8 @@ h1{
 }
 
 .info{
+    height: 4000px;
     width: 70%;
-    height: 2000px;
     border: 2px solid rgb(32, 32, 32);
     margin: auto;
     margin-top: 250px;
@@ -143,4 +143,28 @@ ul{
     width: 98%;
     margin: 20px 0px 20px 0px;
     margin: auto;
+}
+
+table{
+    width: 90%;
+}
+
+p>i{
+    padding-left: 80px;
+}
+
+table, td{
+    border: 1px solid black;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin: auto;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+th{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+td{
+    padding: 10px 20px 10px 20px;
 }

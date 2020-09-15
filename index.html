@@ -23,26 +23,23 @@
         <div id="game">
             <div id="gm1">
                 <p id="scoreboard1">Score: 0</p>
+                <p id="ammocounter1">Ammo: 0</p>
                 <canvas id="canvas1"></canvas>
             </div>
             <div id="gm2">
                 <p id="scoreboard2">Score: 0</p>
+                <p id="ammocounter2">Ammo: 0</p>
                 <canvas id="canvas2"></canvas>
             </div>
             <p id="btnstart">Press ENTER to start, BACKSPACE for multiplayer</p>
             <div class="section">
                 <p id="difftext">Current difficulty: Medium</p>
                 <div id="btngroup1">
-                    <button id="btnpeace"><abbr
-                            title="Number of enemies: 2, Enemy speed: 0.66, Player Speed: 2.25">PEACEFUL</abbr></button>
-                    <button id="btneasy"><abbr
-                            title="Number of enemies: 3, Enemy speed: 0.80, Player Speed: 2">EASY</abbr></button>
-                    <button id="btnmed"><abbr
-                            title="Number of enemies: 4, Enemy speed: 1, Player Speed: 2">MEDIUM</abbr></button>
-                    <button id="btnhard"><abbr
-                            title="Number of enemies: 5, Enemy speed: 1.5, Player Speed: 2">HARD</abbr></button>
-                    <button id="btndark"><abbr title="Number of enemies: 6, Enemy speed: 1.8 Player Speed: 1.8">DARK
-                            SOULS</abbr></button>
+                    <button id="btnpeace">PEACEFUL</button>
+                    <button id="btneasy">EASY</button>
+                    <button id="btnmed">MEDIUM</button>
+                    <button id="btnhard">HARD</button>
+                    <button id="btndark">DARK SOULS</button>
                 </div>
             </div>
             <div class="section">
@@ -64,7 +61,99 @@
         <div class="info">
             <h2>Game</h2>
             <div class="game">
-
+                <h3>Difficulties</h3>
+                <p><i>ppu = pixels per update</i><br><i>mrand = max random (How many pixels up above)</i><br><i>wosu -
+                        without special units</i></p>
+                <table>
+                    <tr>
+                        <th></th>
+                        <th>Peaceful</th>
+                        <th>Easy</th>
+                        <th>Medium</th>
+                        <th>Hard</th>
+                        <th>Dark Souls</th>
+                    </tr>
+                    <tr>
+                        <td>Player Speed (ppu)</td>
+                        <td>2.25</td>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>1.8</td>
+                    </tr>
+                    <tr>
+                        <td>Enemy Speed (ppu)</td>
+                        <td>0.66</td>
+                        <td>0.8</td>
+                        <td>1</td>
+                        <td>1.5</td>
+                        <td>1.8</td>
+                    </tr>
+                    <tr>
+                        <td>Number of Enemies (wosu)</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                        <td>5</td>
+                        <td>6</td>
+                    </tr>
+                    <tr>
+                        <td>Ghost Chance (mrand)</td>
+                        <td>2 000</td>
+                        <td>3 000</td>
+                        <td>5 000</td>
+                        <td>7 500</td>
+                        <td>10 000</td>
+                    </tr>
+                    <tr>
+                        <td>Ghost Speed (ppu)</td>
+                        <td>3</td>
+                        <td>4</td>
+                        <td>5</td>
+                        <td>6.66</td>
+                        <td>8</td>
+                    </tr>
+                    <tr>
+                        <td>Tank Chance (mrand)</td>
+                        <td>4 000</td>
+                        <td>3 000</td>
+                        <td>2 000</td>
+                        <td>1 500</td>
+                        <td>1 000</td>
+                    </tr>
+                    <tr>
+                        <td>Tank Speed (ppu)</td>
+                        <td>0.8</td>
+                        <td>0.9</td>
+                        <td>1</td>
+                        <td>1.1</td>
+                        <td>1.2</td>
+                    </tr>
+                    <tr>
+                        <td>Tank Hit Points</td>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                        <td>5</td>
+                    </tr>
+                    <tr>
+                        <td>Knight Chance (mrand)</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Knight Horizontal Speed (ppu)</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
             </div>
             <hr class="linebig">
             <h2>Controls</h2>
@@ -79,14 +168,32 @@
             <hr class="linebig">
             <h2>Changelog</h2>
             <div class="changelog">
+                <li>Update v20.0915:20
+                    <ul>--------------------ADDITIONS--------------------</ul>
+                    <ul>- Added New type of Enemy "Ghost"</ul>
+                    <ul>- Added Difficulties table</ul>
+                    <ul>- Added Player Ammo</ul>
+                    <ul>--------------------UPDATES--------------------</ul>
+                    <ul>- Updated Game chapter</ul>
+                    <ul>- Updated styles</ul>
+                    <ul>- Updated removing bullets (Cleared from array)</ul>
+                    <ul>--------------------FIXES--------------------</ul>
+                    <ul>- Fixes Game start script</ul>
+                    <ul>- Fixes Ending trigger event</ul>
+                    <ul>--------------------REMOVES--------------------</ul>
+                    <ul>- </ul>
+                </li>
+                <hr class="line">
                 <li>Update v20.0915:16
                     <ul>--------------------ADDITIONS--------------------</ul>
                     <ul>- Added "Points to Win" system</ul>
                     <ul>--------------------UPDATES--------------------</ul>
                     <ul>- Updated script</ul>
                     <ul>- Updated styles</ul>
+                    <ul>--------------------FIXES--------------------</ul>
+                    <ul>- </ul>
                     <ul>--------------------REMOVES--------------------</ul>
-                    <ul>- Useless code</ul>
+                    <ul>- Removed useless code</ul>
                 </li>
                 <hr class="line">
                 <li>Update v20.0914:21
@@ -94,6 +201,8 @@
                     <ul>-</ul>
                     <ul>--------------------UPDATES--------------------</ul>
                     <ul>- Updated README.md</ul>
+                    <ul>--------------------FIXES--------------------</ul>
+                    <ul>- </ul>
                     <ul>--------------------REMOVES--------------------</ul>
                     <ul>-</ul>
                 </li>
@@ -110,6 +219,8 @@
                     <ul>- Updated README.md</ul>
                     <ul>- Updated styles</ul>
                     <ul>- Updated web</ul>
+                    <ul>--------------------FIXES--------------------</ul>
+                    <ul>- </ul>
                     <ul>--------------------REMOVES--------------------</ul>
                     <ul>- Removed Co-op mode</ul>
                     <ul>- Removed arrow page controls</ul>
@@ -120,6 +231,8 @@
                     <ul>- Game</ul>
                     <ul>--------------------UPDATES--------------------</ul>
                     <ul>- My Life</ul>
+                    <ul>--------------------FIXES--------------------</ul>
+                    <ul>- Nothing</ul>
                     <ul>--------------------REMOVES--------------------</ul>
                     <ul>- My free time</ul>
                 </li>
