@@ -1,259 +1,225 @@
-/*variables*/
-let playerLeft;
-let playerRight;
-let playerSpeed = 2;
-let ammo = 8;
-let ammoLeft = ammo;
-let ammoRight = ammo;
-let enemiesLeft = [];
-let enemiesRight = [];
-let eneSpeed = 1;
-let ghostLeft;
-let ghostRight;
-let ghostChance = -5000;
-let ghostSpeed = 5;
-let tankLeft;
-let tankRight;
-let tankChance = -2000;
-let tankHit = 3;
-let tankHitLeft = tankHit;
-let tankHitRight = tankHit;
-let tankSpeed = 1;
-let knightLeft;
-let knightRight;
-let knightSpeed = 1;
-let knightHorizontalSpeedLeft = 2;
-let knightHorizontalSpeedRight = 2;
-let knightChance = -2000;
-let shooterLeft;
-let shooterRight;
-let shooterChance = -500;
-let shooterSpeed = .5
-let shooterShotSpeed = 2;
-let shooterHorizontalSpeedLeft = 1;
-let shooterHorizontalSpeedRight = 1;
-let shooterLeftShot = [];
-let shooterRightShot = [];
-let leftBottom;
-let rightBottom;
-let leftShot = [];
-let leftScore = 0;
-let rightShot = [];
-let rightScore = 0;
+let playerLeft,
+    playerRight,
+    playerSpeed = 2,
+    leftShot = [],
+    rightShot = [],
+    leftScore = 0,
+    rightScore = 0;
+let ammo = 8,
+    ammoLeft = ammo,
+    ammoRight = ammo;
+let enemiesLeft = [],
+    enemiesRight = [],
+    eneSpeed = 1;
+let ghostLeft,
+    ghostRight,
+    ghostChance = -5000,
+    ghostSpeed = 5;
+let tankLeft,
+    tankRight,
+    tankChance = -2000,
+    tankSpeed = 1,
+    tankHit = 3,
+    tankHitLeft = tankHit,
+    tankHitRight = tankHit;
+let knightLeft,
+    knightRight,
+    knightChance = -2000,
+    knightSpeed = 1,
+    knightHorizontalSpeedLeft = 2,
+    knightHorizontalSpeedRight = 2;
+let shooterLeft,
+    shooterRight,
+    shooterChance = -500,
+    shooterSpeed = .5,
+    shooterHorizontalSpeedLeft = 1,
+    shooterHorizontalSpeedRight = 1,
+    shooterShotSpeed = 2,
+    shooterLeftShot = [],
+    shooterRightShot = [];
+let leftBottom, rightBottom;
 let Counter = 0;
 let pointsToWin = 100;
 let difficulty = 4;
-let gameStarted = false;
-let shotsfired = false;
-let isMulti = false;
-let hearts = 1;
-let heartsLeft = hearts;
-let heartsRight = hearts;
-/**/
+let hearts = 1,
+    heartsLeft = hearts,
+    heartsRight = hearts;
+let gameStarted = false,
+    shotsfired = false,
+    isMulti = false;
 
-/*disable arrowkeys*/
 window.addEventListener("keydown", function (e) {
     if ([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
         e.preventDefault();
     }
 }, false);
-/**/
 
-/*Setting up difficulties*/
-document.getElementById("btnpeace").addEventListener("click", function () {
-    difficulty = 2;
-    eneSpeed = 0.66;
-    playerSpeed = 2.25;
-    ghostChance = -2000;
-    ghostSpeed = 3;
-    tankHit = 2
-    tankChance = -4000
-    tankSpeed = 0.8
-    knightSpeed = 0.8;
-    knightHorizontalSpeedLeft = 1.5;
-    knightHorizontalSpeedRight = 1.5;
-    knightChance = -3000;
-    shooterChance = -1000;
-    shooterSpeed = .5
-    shooterShotSpeed = 1.5;
-    shooterHorizontalSpeedLeft = 1;
-    shooterHorizontalSpeedRight = 1;
-    ammo = 15;
-    ammoLeft = ammo;
-    ammoRight = ammo;
-    document.getElementById("difftext").innerHTML = "Current difficulty: Peaceful";
-});
-document.getElementById("btneasy").addEventListener("click", function () {
-    difficulty = 3;
-    eneSpeed = 0.80;
-    playerSpeed = 2;
-    ghostChance = -3000;
-    ghostSpeed = 4;
-    tankHit = 2
-    tankChance = -3000
-    tankSpeed = 0.9
-    knightSpeed = 0.9;
-    knightHorizontalSpeedLeft = 1.75;
-    knightHorizontalSpeedRight = 1.75;
-    knightChance = -3000;
-    shooterChance = -750;
-    shooterSpeed = .5
-    shooterShotSpeed = 1.5;
-    shooterHorizontalSpeedLeft = 1;
-    shooterHorizontalSpeedRight = 1;
-    ammo = 10
-    ammoLeft = ammo;
-    ammoRight = ammo;
-    document.getElementById("difftext").innerHTML = "Current difficulty: Easy";
-});
-document.getElementById("btnmed").addEventListener("click", function () {
-    difficulty = 4;
-    eneSpeed = 1;
-    playerSpeed = 2;
-    ghostChance = -5000;
-    ghostSpeed = 5;
-    tankHit = 3
-    tankChance = -2000
-    tankSpeed = 1
-    knightSpeed = 1;
-    knightHorizontalSpeedLeft = 2;
-    knightHorizontalSpeedRight = 2;
-    knightChance = -2000;
-    shooterChance = -500;
-    shooterSpeed = .5
-    shooterShotSpeed = 2;
-    shooterHorizontalSpeedLeft = 1;
-    shooterHorizontalSpeedRight = 1;
-    ammo = 8
-    ammoLeft = ammo;
-    ammoRight = ammo;
-    document.getElementById("difftext").innerHTML = "Current difficulty: Medium";
-});
-document.getElementById("btnhard").addEventListener("click", function () {
-    difficulty = 5;
-    eneSpeed = 1.5;
-    playerSpeed = 2;
-    ghostChance - 7500;
-    ghostSpeed = 6.66;
-    tankHit = 4
-    tankChance = -1500
-    tankSpeed = 1.1
-    knightSpeed = 1.25;
-    knightHorizontalSpeedLeft = 2.2;
-    knightHorizontalSpeedRight = 2.2;
-    knightChance = -1500;
-    shooterChance = -400;
-    shooterSpeed = .75
-    shooterShotSpeed = 3;
-    shooterHorizontalSpeedLeft = 1;
-    shooterHorizontalSpeedRight = 1;
-    ammo = 5
-    ammoLeft = ammo;
-    ammoRight = ammo;
-    document.getElementById("difftext").innerHTML = "Current difficulty: Hard";
-});
-document.getElementById("btndark").addEventListener("click", function () {
-    difficulty = 6;
-    eneSpeed = 1.8;
-    playerSpeed = 1.8;
-    ghostChance = -10000
-    ghostSpeed = 8;
-    tankHit = 5
-    tankChance = -1000
-    tankSpeed = 1.2
-    knightSpeed = 1.5;
-    knightHorizontalSpeedLeft = 2.5;
-    knightHorizontalSpeedRight = 2.5;
-    knightChance = -1000;
-    shooterChance = -300;
-    shooterSpeed = 1
-    shooterShotSpeed = 4;
-    shooterHorizontalSpeedLeft = 1;
-    shooterHorizontalSpeedRight = 1;
-    ammo = 3
-    ammoLeft = ammo;
-    ammoRight = ammo;
-    document.getElementById("difftext").innerHTML = "Current difficulty: Dark Souls";
-});
-/**/
+document.querySelectorAll("#btnpeace, #btneasy, #btnmed, #btnhard, #btndark").forEach(item => {
+    item.addEventListener("click", event => {
+        if (item.id == "btnpeace") {
+            difficulty = 2;
+            eneSpeed = 0.66;
+            playerSpeed = 2.25;
+            ghostChance = -2000;
+            ghostSpeed = 3;
+            tankHit = 2
+            tankChance = -4000
+            tankSpeed = 0.8
+            knightSpeed = 0.8;
+            knightHorizontalSpeedLeft = 1.5;
+            knightHorizontalSpeedRight = 1.5;
+            knightChance = -3000;
+            shooterChance = -1000;
+            shooterSpeed = .5
+            shooterShotSpeed = 1.5;
+            shooterHorizontalSpeedLeft = 1;
+            shooterHorizontalSpeedRight = 1;
+            ammo = 15;
+            ammoLeft = ammo;
+            ammoRight = ammo;
+        } else if (item.id == "btneasy") {
+            difficulty = 3;
+            eneSpeed = 0.80;
+            playerSpeed = 2;
+            ghostChance = -3000;
+            ghostSpeed = 4;
+            tankHit = 2
+            tankChance = -3000
+            tankSpeed = 0.9
+            knightSpeed = 0.9;
+            knightHorizontalSpeedLeft = 1.75;
+            knightHorizontalSpeedRight = 1.75;
+            knightChance = -3000;
+            shooterChance = -750;
+            shooterSpeed = .5
+            shooterShotSpeed = 1.5;
+            shooterHorizontalSpeedLeft = 1;
+            shooterHorizontalSpeedRight = 1;
+            ammo = 10
+            ammoLeft = ammo;
+            ammoRight = ammo;
+        } else if (item.id == "btnmed") {
+            difficulty = 4;
+            eneSpeed = 1;
+            playerSpeed = 2;
+            ghostChance = -5000;
+            ghostSpeed = 5;
+            tankHit = 3
+            tankChance = -2000
+            tankSpeed = 1
+            knightSpeed = 1;
+            knightHorizontalSpeedLeft = 2;
+            knightHorizontalSpeedRight = 2;
+            knightChance = -2000;
+            shooterChance = -500;
+            shooterSpeed = .5
+            shooterShotSpeed = 2;
+            shooterHorizontalSpeedLeft = 1;
+            shooterHorizontalSpeedRight = 1;
+            ammo = 8
+            ammoLeft = ammo;
+            ammoRight = ammo;
+        } else if (item.id == "btnhard") {
+            difficulty = 5;
+            eneSpeed = 1.5;
+            playerSpeed = 2;
+            ghostChance - 7500;
+            ghostSpeed = 6.66;
+            tankHit = 4
+            tankChance = -1500
+            tankSpeed = 1.1
+            knightSpeed = 1.25;
+            knightHorizontalSpeedLeft = 2.2;
+            knightHorizontalSpeedRight = 2.2;
+            knightChance = -1500;
+            shooterChance = -400;
+            shooterSpeed = .75
+            shooterShotSpeed = 3;
+            shooterHorizontalSpeedLeft = 1;
+            shooterHorizontalSpeedRight = 1;
+            ammo = 5
+            ammoLeft = ammo;
+            ammoRight = ammo;
+        } else if (item.id == "btndark") {
+            difficulty = 6;
+            eneSpeed = 1.8;
+            playerSpeed = 1.8;
+            ghostChance = -10000
+            ghostSpeed = 8;
+            tankHit = 5
+            tankChance = -1000
+            tankSpeed = 1.2
+            knightSpeed = 1.5;
+            knightHorizontalSpeedLeft = 2.5;
+            knightHorizontalSpeedRight = 2.5;
+            knightChance = -1000;
+            shooterChance = -300;
+            shooterSpeed = 1
+            shooterShotSpeed = 4;
+            shooterHorizontalSpeedLeft = 1;
+            shooterHorizontalSpeedRight = 1;
+            ammo = 3
+            ammoLeft = ammo;
+            ammoRight = ammo;
+        }
+        document.getElementById("difftext").innerHTML = "Current difficulty: " + item.getAttribute('data-diff');
+        document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft + "/" + ammo;
+        document.getElementById("ammocounter2").innerHTML = "Ammo: " + ammoRight + "/" + ammo;
+    })
+})
 
-/*Setting up points to win*/
-document.getElementById("btndisabled").addEventListener("click", function () {
-    pointsToWin = 9999;
-    document.getElementById("difftextscore").innerHTML = "Current win on score: Disabled";
-    document.getElementById("scoreboard1").innerHTML = "Score: 0"
-    document.getElementById("scoreboard2").innerHTML = "Score: 0"
-});
-document.getElementById("btn50").addEventListener("click", function () {
-    pointsToWin = 50;
-    document.getElementById("difftextscore").innerHTML = "Current win on score: 50";
-    document.getElementById("scoreboard1").innerHTML = "Score: 0/" + pointsToWin;
-    document.getElementById("scoreboard2").innerHTML = "Score: 0/" + pointsToWin;
-});
-document.getElementById("btn100").addEventListener("click", function () {
-    pointsToWin = 100;
-    document.getElementById("difftextscore").innerHTML = "Current win on score: 100";
-    document.getElementById("scoreboard1").innerHTML = "Score: 0/" + pointsToWin;
-    document.getElementById("scoreboard2").innerHTML = "Score: 0/" + pointsToWin;
-});
-document.getElementById("btn200").addEventListener("click", function () {
-    pointsToWin = 200;
-    document.getElementById("difftextscore").innerHTML = "Current win on score: 200";
-    document.getElementById("scoreboard1").innerHTML = "Score: 0/" + pointsToWin;
-    document.getElementById("scoreboard2").innerHTML = "Score: 0/" + pointsToWin;
-});
-document.getElementById("btncustom").addEventListener("click", function () {
-    pointsToWin = document.getElementById("customvalue").value;
-    document.getElementById("difftextscore").innerHTML = "Current win on score: " + pointsToWin;
-    document.getElementById("scoreboard1").innerHTML = "Score: 0/" + pointsToWin;
-    document.getElementById("scoreboard2").innerHTML = "Score: 0/" + pointsToWin;
-});
-/**/
+document.querySelectorAll("#btndisabled, #btn50, #btn100, #btn200, #btncustom").forEach(item => {
+    item.addEventListener("click", event => {
+        switch (item.id) {
+            case "btndisabled":
+                pointsToWin = 9999;
+                break;
+            case "btn50":
+                pointsToWin = 50;
+                break;
+            case "btn100":
+                pointsToWin = 100;
+                break;
+            case "btn200":
+                pointsToWin = 200;
+                break;
+            case "btncustom":
+                pointsToWin = document.getElementById("customvalue").value
+                break;
+        }
+        document.getElementById("difftextscore").innerHTML = "Current win on score: " + pointsToWin;
+        document.getElementById("scoreboard1").innerHTML = "Score: 0/" + pointsToWin
+        document.getElementById("scoreboard2").innerHTML = "Score: 0/" + pointsToWin
+    })
+})
 
-/*Hearts*/
-document.getElementById("btn1").addEventListener("click", function () {
-    hearts = 1;
-    document.getElementById("heartsetting").innerHTML = "Current hearts: 1";
-    document.getElementById("heartcounter1").innerHTML = "Hearts: 1/1"
-    document.getElementById("heartcounter2").innerHTML = "Hearts: 1/1"
-    heartsRight = hearts;
-    heartsLeft = hearts;
-});
-document.getElementById("btn2").addEventListener("click", function () {
-    hearts = 2;
-    document.getElementById("heartsetting").innerHTML = "Current hearts: 2";
-    document.getElementById("heartcounter1").innerHTML = "Hearts: 2/2"
-    document.getElementById("heartcounter2").innerHTML = "Hearts: 2/2"
-    heartsRight = hearts;
-    heartsLeft = hearts;
-});
-document.getElementById("btn3").addEventListener("click", function () {
-    hearts = 3;
-    document.getElementById("heartsetting").innerHTML = "Current hearts: 3";
-    document.getElementById("heartcounter1").innerHTML = "Hearts: 3/3"
-    document.getElementById("heartcounter2").innerHTML = "Hearts: 3/3"
-    heartsRight = hearts;
-    heartsLeft = hearts;
-});
-document.getElementById("btn5").addEventListener("click", function () {
-    hearts = 5;
-    document.getElementById("heartsetting").innerHTML = "Current hearts: 5";
-    document.getElementById("heartcounter1").innerHTML = "Hearts: 5/5"
-    document.getElementById("heartcounter2").innerHTML = "Hearts: 5/5"
-    heartsRight = hearts;
-    heartsLeft = hearts;
-});
-document.getElementById("btncustomheart").addEventListener("click", function () {
-    hearts = document.getElementById("customheartvalue").value;
-    document.getElementById("heartsetting").innerHTML = "Current hearts: " + hearts;
-    document.getElementById("heartcounter1").innerHTML = "Hearts: " + hearts + "/" + hearts;
-    document.getElementById("heartcounter2").innerHTML = "Hearts: " + hearts + "/" + hearts;
-    heartsRight = hearts;
-    heartsLeft = hearts;
-});
-/**/
+document.querySelectorAll("#btn1, #btn2, #btn3, #btn5, #btncustomheart").forEach(item => {
+    item.addEventListener("click", event => {
+        switch (item.id) {
+            case "btn1":
+                hearts = 1;
+                break;
+            case "btn2":
+                hearts = 2;
+                break;
+            case "btn3":
+                hearts = 3;
+                break;
+            case "btn5":
+                hearts = 5;
+                break;
+            case "btncustomheart":
+                hearts = document.getElementById("customheartvalue").value
+                break;
+        }
+        heartsRight = hearts;
+        heartsLeft = hearts;
+        document.getElementById("heartsetting").innerHTML = "Current hearts: " + hearts;
+        document.getElementById("heartcounter1").innerHTML = "Hearts: " + heartsLeft + "/" + hearts;
+        document.getElementById("heartcounter2").innerHTML = "Hearts: " + heartsRight + "/" + hearts;
+    })
+})
 
-/*Starts the game*/
 function startGame(type) {
     switch (type) {
         case 1:
@@ -265,22 +231,16 @@ function startGame(type) {
             isMulti = true;
             break;
     }
-    document.getElementById("btnstart").style.display = "none";
-    document.getElementById("btngroup1").style.display = "none";
-    document.getElementById("btngroup2").style.display = "none";
-    document.getElementById("btngroup3").style.display = "none";
-    document.getElementById("heartsetting").style.display = "none";
-    document.getElementById("form").style.display = "none";
-    document.getElementById("customheartvalue").style.display = "none";
-    document.getElementById("difftext").style.display = "none";
-    document.getElementById("difftextscore").style.display = "none";
-    document.getElementById("info").style.display = "none";
+    document.getElementById("hideOnStart").style.display = "none";
     leftBottom = new component(500, 3, "blue", 0, 497);
     playerLeft = new component(20, 15, "blue", 241, 470);
     ghostLeft = new component(30, 30, "pink", Math.floor(Math.random() * 441) + 30, Math.floor(Math.random() * ghostChance) - 2000);
     tankLeft = new component(50, 30, "orange", Math.floor(Math.random() * 441) + 30, Math.floor(Math.random() * tankChance) - 2000);
     knightLeft = new component(40, 40, "tomato", Math.floor(Math.random() * 441) + 30, Math.floor(Math.random() * knightChance) - 1000);
     shooterLeft = new component(30, 40, "orangered", Math.floor(Math.random() * 441) + 30, Math.floor(Math.random() * shooterChance) - 1000);
+    for (t = 0; t < difficulty; t++) {
+        enemiesLeft.push(new component(30, 30, "red", Math.floor(Math.random() * 441) + 30, -40 + -(t * 100)));
+    }
     gameLeft.start();
     gameStarted = true;
     if (isMulti == true) {
@@ -290,13 +250,13 @@ function startGame(type) {
         tankRight = new component(50, 30, "orange", Math.floor(Math.random() * 441) + 30, Math.floor(Math.random() * tankChance) - 2000);
         knightRight = new component(50, 30, "tomato", Math.floor(Math.random() * 441) + 30, Math.floor(Math.random() * knightChance) - 1000);
         shooterRight = new component(30, 40, "orangered", Math.floor(Math.random() * 441) + 30, Math.floor(Math.random() * shooterChance) - 1000);
+        for (t = 0; t < difficulty; t++) {
+            enemiesRight.push(new component(30, 30, "red", Math.floor(Math.random() * 441) + 30, -40 + -(t * 100)));
+        }
         gameRight.start();
     }
 }
-/**/
 
-
-/*Startup for left canvas*/
 let gameLeft = {
     canvasLeft: document.getElementById("canvas1"),
     start: function () {
@@ -314,9 +274,7 @@ let gameLeft = {
         clearInterval(this.intervalLeft);
     }
 }
-/**/
 
-/*Startup for right canvas*/
 let gameRight = {
     canvasRight: document.getElementById("canvas2"),
     start: function () {
@@ -332,9 +290,7 @@ let gameRight = {
         clearInterval(this.intervalRight);
     }
 }
-/**/
 
-/*Function creating components*/
 function component(width, height, color, x, y) {
     this.width = width;
     this.height = height;
@@ -372,35 +328,17 @@ function component(width, height, color, x, y) {
         return crash;
     }
 }
-/**/
 
-/*Updates*/
 function updateGameArea() {
-
-    Counter++;
-    if (Counter == 201 && enemiesLeft.length < difficulty) {
-        Counter = 1;
-        enemiesLeft.push(new component(30, 30, "red", Math.floor(Math.random() * 441) + 30, -40));
-    } else if (Counter == 1) {
-        enemiesLeft.push(new component(30, 30, "red", Math.floor(Math.random() * 441) + 30, -40));
-    }
-    if (pointsToWin <= rightScore && isMulti == true) {
+    if ((pointsToWin <= rightScore && isMulti == true) || (pointsToWin <= leftScore) || (heartsLeft == 0) || (isMulti == true && heartsRight == 0)) {
         gameStarted = false;
         gameRight.stop();
         gameLeft.stop();
-        end(1);
-    }
-    if (pointsToWin <= leftScore && isMulti == true) {
-        gameStarted = false;
-        gameRight.stop();
-        gameLeft.stop();
-        end(2);
-    }
-    if (pointsToWin <= leftScore && isMulti == false) {
-        gameStarted = false;
-        gameRight.stop();
-        gameLeft.stop();
-        end(2);
+        if ((pointsToWin <= leftScore) || heartsRight < hearts) {
+            end(1);
+        } else if ((pointsToWin <= rightScore && isMulti == true) || heartsLeft < hearts){
+            end(2)
+        }
     }
     for (i = 0; i < enemiesLeft.length; i += 1) {
         if (playerLeft.crashWith(enemiesLeft[i]) && gameStarted == true) {
@@ -555,12 +493,6 @@ function updateGameArea() {
         if (shooterLeftShot[n].y > 500)
             shooterLeftShot.splice(n, 1)
     }
-    if (gameStarted == true && heartsLeft == 0) {
-        gameStarted = false;
-        gameRight.stop();
-        gameLeft.stop();
-        end(1);
-    }
     shooterLeftMove()
     shooterLeft.x += shooterHorizontalSpeedLeft;
     shooterLeft.y += shooterSpeed;
@@ -573,6 +505,7 @@ function updateGameArea() {
     tankLeft.updateLeft();
     ghostLeft.y += ghostSpeed;
     ghostLeft.updateLeft();
+    leftBottom.updateLeft();
     playerLeft.newPos();
     playerLeft.updateLeft();
     if (isMulti == true) {
@@ -734,12 +667,6 @@ function updateGameArea() {
             if (shooterLRightShot[m].y > 500)
                 shooterRightShot.splice(n, 1)
         }
-        if (gameStarted == true && heartsRight == 0) {
-            gameStarted = false;
-            gameRight.stop();
-            gameLeft.stop();
-            end(1);
-        }
         shooterRightMove()
         shooterRight.x += shooterHorizontalSpeedRight;
         shooterRight.y += shooterSpeed;
@@ -752,11 +679,11 @@ function updateGameArea() {
         tankRight.updateRight();
         ghostRight.y += ghostSpeed;
         ghostRight.updateRight();
+        rightBottom.updateRight();
         playerRight.newPos();
         playerRight.updateRight();
     }
 }
-/*Updates*/
 
 function shooterLeftMove() {
     if (shooterLeft.x > playerLeft.x) {
@@ -775,7 +702,6 @@ function shooterLeftMove() {
 }
 
 function shooterRightMove() {
-
     if (shooterRight.x > playerRight.x) {
         shooterHorizontalSpeedRight = -1
     } else if (shooterRight.x < playerRight.x) {
@@ -803,26 +729,24 @@ function knightBordersRight() {
     }
 }
 
-
-/* Ending */
 function end(ending) {
     if (isMulti == true) {
         switch (ending) {
-            case 1:
+            case 2:
                 document.getElementById("looser").innerHTML = "LEFT LOST, RIGHT WON"
                 document.getElementById("scorefin").innerHTML = "Left Score: " + leftScore + "; Right Score: " + rightScore
                 break;
-            case 2:
+            case 1:
                 document.getElementById("looser").innerHTML = "LEFT WON, RIGHT LOST"
                 document.getElementById("scorefin").innerHTML = "Left Score: " + leftScore + "; Right Score: " + rightScore
                 break;
         }
     } else {
         switch (ending) {
-            case 1:
+            case 2:
                 document.getElementById("scorefin").innerHTML = "Your Score: " + leftScore
                 break;
-            case 2:
+            case 1:
                 document.getElementById("looser").innerHTML = "YOU WON"
                 document.getElementById("scorefin").innerHTML = "Your Score: " + leftScore
                 break;
@@ -836,9 +760,7 @@ function end(ending) {
         }
     }
 }
-/**/
 
-/* Key commands */
 document.onkeydown = function movement(key) {
     if (gameStarted == true) {
         switch (key.keyCode) {
@@ -889,7 +811,7 @@ document.onkeydown = function movement(key) {
         }
     } else if (key.keyCode == 13 && gameStarted != true) {
         startGame(1)
-    } else if (key.keyCode == 8 && gameStarted != true) {
+    } else if (key.keyCode == 32 && gameStarted != true) {
         startGame(2)
     }
 }
@@ -927,4 +849,3 @@ document.onkeyup = function movement(key) {
         }
     }
 }
-/**/

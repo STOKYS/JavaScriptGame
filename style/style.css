@@ -1,23 +1,25 @@
-#game{
+#game {
     width: 1004px;
     height: 600px;
-    margin: auto;    transition-delay: 2s;
+    margin: auto;
+    transition-delay: 2s;
     transition-duration: 2s;
 }
 
-h1{
- font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
- text-align: center;
+h1 {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
 }
 
-#gm1, #gm2{
+#gm1,
+#gm2 {
     float: left;
     display: table;
 }
 
-#info{
+#info {
     height: 5000px;
-    width: 70%;
+    width: 60%;
     border: 2px solid rgb(32, 32, 32);
     margin: auto;
     margin-top: 500px;
@@ -33,32 +35,33 @@ canvas {
     height: 500px;
 }
 
-#btnstart{
+.pressToStart {
     margin: auto;
+    width: 1000px;
 }
 
-body{
+body {
     background-color: rgb(200, 175, 150);
 }
 
-p, h1{
+p,
+h1 {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
-#btngroup1, #btngroup2, #btngroup3{
-    width: 550px;
-    margin: auto;
+div>.prgbar{
+    width: 200px;
+    border: 2px solid black;
+    background-color: antiquewhite;
 }
 
-button{
-    display: table;
-    float: left;
-    width: 110px;
-    height: 30px;
-
+hr>.prg{
+    border-bottom: 50px solid white;
+    margin: 0px;
+    width: 50%;
 }
 
-footer{
+footer {
     position: fixed;
     left: 0;
     bottom: 0;
@@ -68,11 +71,29 @@ footer{
     padding-left: 20px;
 }
 
-.section{
-margin-top: 50px;
+.settings {
+    width: 100%;
+    margin-left: 1%;
 }
 
-#retry{
+.section {
+    width: 49%;
+    display: table;
+    float: left;
+}
+
+button {
+    display: table;
+    float: left;
+    width: 110px;
+    height: 30px;
+}
+
+.infoTable{
+    margin-bottom: 20px;
+}
+
+#retry {
     display: none;
     position: absolute;
     width: 40%;
@@ -86,35 +107,36 @@ margin-top: 50px;
     z-index: 5;
 }
 
-h2, h3, h4{
+h2,
+h3,
+h4 {
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
 }
 
-
-form>input{
+form>input {
     box-sizing: border-box;
     border: 2px solid rgb(66, 66, 66);
     border-radius: 5px;
     height: 30px;
 }
 
-h2{
+h2 {
     font-size: 50px;
 }
 
-h3{
+h3 {
     font-size: 40px;
 }
 
-.info>h2{
+.info>h2 {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     color: rgb(37, 37, 37);
     text-align: left;
     padding-left: 100px;
 }
 
-li{
+li {
     color: black;
     font-size: 20px;
     font-weight: 550;
@@ -122,33 +144,34 @@ li{
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
-ul{
+ul {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 15px;
     font-weight: 500;
 }
 
-.line{
+.line {
     border-top: 1px dotted black;
     width: 92%;
 }
 
-.linebig{
+.linebig {
     border-top: 2px dashed black;
     width: 98%;
     margin: 20px 0px 20px 0px;
     margin: auto;
 }
 
-table{
+table {
     width: 90%;
 }
 
-p>i{
+p>i {
     padding-left: 80px;
 }
 
-table, td{
+table,
+td {
     border: 1px solid black;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     margin: auto;
@@ -156,10 +179,10 @@ table, td{
     margin-bottom: 50px;
 }
 
-th{
+th {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-td{
+td {
     padding: 10px 20px 10px 20px;
 }

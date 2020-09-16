@@ -22,306 +22,335 @@
         </div>
         <div id="game">
             <div id="gm1">
-                <p id="scoreboard1">Score: 0/100</p>
-                <p id="ammocounter1">Ammo: 8/8</p>
-                <p id="heartcounter1">Hearts: 1/1</p>
+                <table class="infoTable">
+                    <tr>
+                        <td id="scoreboard1">Score: 0/100</td>
+                        <td id="ammocounter1">Ammo: 8/8</td>
+                        <td id="heartcounter1">Hearts: 1/1</td>
+                    </tr>
+                </table>
                 <canvas id="canvas1"></canvas>
             </div>
             <div id="gm2">
-                <p id="scoreboard2">Score: 0/100</p>
-                <p id="ammocounter2">Ammo: 8/8</p>
-                <p id="heartcounter2">Hearts: 1/1</p>
+                <table class="infoTable">
+                    <tr>
+                        <td id="scoreboard2">Score: 0/100</td>
+                        <td id="ammocounter2">Ammo: 8/8</td>
+                        <td id="heartcounter2">Hearts: 1/1</td>
+                    </tr>
+                </table>
                 <canvas id="canvas2"></canvas>
             </div>
-            <p id="btnstart">Press ENTER to start, BACKSPACE for multiplayer</p>
-            <div class="section">
-                <p id="difftext">Current difficulty: Medium</p>
-                <div id="btngroup1">
-                    <button id="btnpeace">PEACEFUL</button>
-                    <button id="btneasy">EASY</button>
-                    <button id="btnmed">MEDIUM</button>
-                    <button id="btnhard">HARD</button>
-                    <button id="btndark">DARK SOULS</button>
+        </div>
+        <div id="hideOnStart">
+            <p class="pressToStart">Press ENTER to start, SPACEBAR for multiplayer</p>
+            <div class="settings">
+                <div class="section">
+                    <p id="difftext">Current difficulty: Medium</p>
+                    <button id="btnpeace" data-diff="Peaceful">PEACEFUL</button>
+                    <button id="btneasy" data-diff="Easy">EASY</button>
+                    <button id="btnmed" data-diff="Medium">MEDIUM</button>
+                    <button id="btnhard" data-diff="Hard">HARD</button>
+                    <button id="btndark" data-diff="Dark Souls">DARK SOULS</button>
                 </div>
-            </div>
-            <div class="section">
-                <br>
-                <p id="difftextscore">Current win on score: 100</p>
-                <div id="btngroup2">
+                <div class="section">
+                    <p id="difftextscore">Current win on score: 100</p>
                     <button id="btndisabled">DISABLED</button>
                     <button id="btn50">50</button>
                     <button id="btn100">100</button>
                     <button id="btn200">200</button>
                     <button id="btncustom">CUSTOM:</button>
+                    <form action="/action_page.php" id="form">
+                        <input type="text" id="customvalue" name="number">
+                    </form>
                 </div>
-                <form action="/action_page.php" id="form">
-                    <input type="text" id="customvalue" name="number">
-                </form>
-            </div>
-            <div class="section">
-                <p id="heartsetting">Current hearts: 1</p>
-                <div id="btngroup3">
+                <div class="section">
+                    <p id="heartsetting">Current hearts: 1</p>
                     <button id="btn1">1</button>
                     <button id="btn2">2</button>
                     <button id="btn3">3</button>
                     <button id="btn5">5</button>
                     <button id="btncustomheart">CUSTOM:</button>
+                    <form action="/action_page.php" id="form">
+                        <input type="text" id="customheartvalue" name="number">
+                    </form>
                 </div>
-                <form action="/action_page.php" id="form">
-                    <input type="text" id="customheartvalue" name="number">
-                </form>
+                <div class="section">
+                    <p>Special enemies</p>
+                    <button id="enableGhosts">Ghost: On</button>
+                    <button id="enableTanks">Tanks: On</button>
+                    <button id="enableShooters">Shooters: On</button>
+                    <button id="enableKnights">Knights: On</button>
+                    <button id="enableBoss">Final Boss: Off</button>
+                </div>
             </div>
-        </div>
-        </div>
-        <div id="info">
-            <h2>Game</h2>
-            <div class="game">
+            <div id="info">
+                <h2>Game</h2>
                 <h3>Difficulties</h3>
-                <p><i>ppu = pixels per update</i><br><i>mrand = max random (How many pixels up above)</i><br><i>wosu -
-                        without special units</i></p>
-                <table>
-                    <tr>
-                        <th></th>
-                        <th>Peaceful</th>
-                        <th>Easy</th>
-                        <th>Medium</th>
-                        <th>Hard</th>
-                        <th>Dark Souls</th>
-                    </tr>
-                    <tr>
-                        <td>Player Speed (ppu)</td>
-                        <td>2.25</td>
-                        <td>2</td>
-                        <td>2</td>
-                        <td>2</td>
-                        <td>1.8</td>
-                    </tr>
-                    <tr>
-                        <td>Enemy Speed (ppu)</td>
-                        <td>0.66</td>
-                        <td>0.8</td>
-                        <td>1</td>
-                        <td>1.5</td>
-                        <td>1.8</td>
-                    </tr>
-                    <tr>
-                        <td>Number of Enemies (wosu)</td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>4</td>
-                        <td>5</td>
-                        <td>6</td>
-                    </tr>
-                    <tr>
-                        <td>Ghost Chance (mrand)</td>
-                        <td>2 000</td>
-                        <td>3 000</td>
-                        <td>5 000</td>
-                        <td>7 500</td>
-                        <td>10 000</td>
-                    </tr>
-                    <tr>
-                        <td>Ghost Speed (ppu)</td>
-                        <td>3</td>
-                        <td>4</td>
-                        <td>5</td>
-                        <td>6.66</td>
-                        <td>8</td>
-                    </tr>
-                    <tr>
-                        <td>Tank Chance (mrand)</td>
-                        <td>4 000</td>
-                        <td>3 000</td>
-                        <td>2 000</td>
-                        <td>1 500</td>
-                        <td>1 000</td>
-                    </tr>
-                    <tr>
-                        <td>Tank Speed (ppu)</td>
-                        <td>0.8</td>
-                        <td>0.9</td>
-                        <td>1</td>
-                        <td>1.1</td>
-                        <td>1.2</td>
-                    </tr>
-                    <tr>
-                        <td>Tank Hit Points</td>
-                        <td>2</td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>4</td>
-                        <td>5</td>
-                    </tr>
-                    <tr>
-                        <td>Knight Chance (mrand)</td>
-                        <td>3 000</td>
-                        <td>3 000</td>
-                        <td>2 000</td>
-                        <td>1 500</td>
-                        <td>1 000</td>
-                    </tr>
-                    <tr>
-                        <td>Knight Speed (ppu)</td>
-                        <td>0.8</td>
-                        <td>0.9</td>
-                        <td>1</td>
-                        <td>1.25</td>
-                        <td>1.5</td>
-                    </tr>
-                    <tr>
-                        <td>Knight Horizontal Speed (ppu)</td>
-                        <td>1.5</td>
-                        <td>1.75</td>
-                        <td>2</td>
-                        <td>2.2</td>
-                        <td>2.5</td>
-                    </tr>
-                    <tr>
-                        <td>Shooter Chance (mrand)</td>
-                        <td>1 000</td>
-                        <td>750</td>
-                        <td>500</td>
-                        <td>400</td>
-                        <td>300</td>
-                    </tr>
-                    <tr>
-                        <td>Shooter Speed (ppu)</td>
-                        <td>0.5</td>
-                        <td>0.5</td>
-                        <td>0.5</td>
-                        <td>0.75</td>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <td>Shooter Horizontal Speed (ppu)</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <td>Shooter Round Speed (ppu)</td>
-                        <td>1.5</td>
-                        <td>1.5</td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>4</td>
-                    </tr>
-                </table>
-            </div>
-            <hr class="linebig">
-            <h2>Controls</h2>
-            <div class="controls">
-
-            </div>
-            <hr class="linebig">
-            <h2>Features</h2>
-            <div class="features">
-
-            </div>
-            <hr class="linebig">
-            <h2>Changelog</h2>
-            <div class="changelog">
-                <li>Update v20.0916:18
-                    <ul>--------------------ADDITIONS--------------------</ul>
-                    <ul>- Added New type of Enemy "Shooter"</ul>
-                    <ul>- Added Health system</ul>
-                    <ul>--------------------UPDATES--------------------</ul>
-                    <ul>- Updated Styles</ul>
-                    <ul>- Updated Difficulties</ul>
-                    <ul>--------------------FIXES--------------------</ul>
-                    <ul>- Fixed disappearing ammo</ul>
-                    <ul>--------------------REMOVES--------------------</ul>
-                    <ul>- Removed console.logs() for debugging</ul>
-                </li>
-                <hr class="line">
-                <li>Update v20.0916:07
-                    <ul>--------------------ADDITIONS--------------------</ul>
-                    <ul>- Added New type of Enemy "Knight"</ul>
-                    <ul>- Added Ammo Counter</ul>
-                    <ul>--------------------UPDATES--------------------</ul>
-                    <ul>-</ul>
-                    <ul>--------------------FIXES--------------------</ul>
-                    <ul>-</ul>
-                    <ul>--------------------REMOVES--------------------</ul>
-                    <ul>-</ul>
-                </li>
-                <hr class="line">
-                <li>Update v20.0915:20
-                    <ul>--------------------ADDITIONS--------------------</ul>
-                    <ul>- Added New type of Enemy "Ghost"</ul>
-                    <ul>- Added New type of Enemy "Tank"</ul>
-                    <ul>- Added Difficulties table</ul>
-                    <ul>- Added Player Ammo</ul>
-                    <ul>--------------------UPDATES--------------------</ul>
-                    <ul>- Updated Game chapter</ul>
-                    <ul>- Updated styles</ul>
-                    <ul>- Updated removing bullets (Cleared from array)</ul>
-                    <ul>--------------------FIXES--------------------</ul>
-                    <ul>- Fixes Game start script</ul>
-                    <ul>- Fixes Ending trigger event</ul>
-                    <ul>--------------------REMOVES--------------------</ul>
-                    <ul>- </ul>
-                </li>
-                <hr class="line">
-                <li>Update v20.0915:16
-                    <ul>--------------------ADDITIONS--------------------</ul>
-                    <ul>- Added "Points to Win" system</ul>
-                    <ul>--------------------UPDATES--------------------</ul>
-                    <ul>- Updated script</ul>
-                    <ul>- Updated styles</ul>
-                    <ul>--------------------FIXES--------------------</ul>
-                    <ul>- </ul>
-                    <ul>--------------------REMOVES--------------------</ul>
-                    <ul>- Removed useless code</ul>
-                </li>
-                <hr class="line">
-                <li>Update v20.0914:21
-                    <ul>--------------------ADDITIONS--------------------</ul>
-                    <ul>-</ul>
-                    <ul>--------------------UPDATES--------------------</ul>
-                    <ul>- Updated README.md</ul>
-                    <ul>--------------------FIXES--------------------</ul>
-                    <ul>- </ul>
-                    <ul>--------------------REMOVES--------------------</ul>
-                    <ul>-</ul>
-                </li>
-                <hr class="line">
-                <li>Update v20.0914:20
-                    <ul>--------------------ADDITIONS--------------------</ul>
-                    <ul>- Added Changelog in info</ul>
-                    <ul>- Added Features chapter in info</ul>
-                    <ul>- Added Controls chapter in info</ul>
-                    <ul>- Added Game chapter in info</ul>
-                    <ul>- Added new difficulties (Peaceful and Dark Souls)</ul>
-                    <ul>--------------------UPDATES--------------------</ul>
-                    <ul>- Updated difficulties (difficulties now change enemy and player speed)</ul>
-                    <ul>- Updated README.md</ul>
-                    <ul>- Updated styles</ul>
-                    <ul>- Updated web</ul>
-                    <ul>--------------------FIXES--------------------</ul>
-                    <ul>- </ul>
-                    <ul>--------------------REMOVES--------------------</ul>
-                    <ul>- Removed Co-op mode</ul>
-                    <ul>- Removed arrow page controls</ul>
-                </li>
-                <hr class="line">
-                <li>Updates before
-                    <ul>--------------------ADDITIONS--------------------</ul>
-                    <ul>- Game</ul>
-                    <ul>--------------------UPDATES--------------------</ul>
-                    <ul>- My Life</ul>
-                    <ul>--------------------FIXES--------------------</ul>
-                    <ul>- Nothing</ul>
-                    <ul>--------------------REMOVES--------------------</ul>
-                    <ul>- My free time</ul>
-                </li>
+                <div class="Difficulties">
+                    <p>
+                        <i>ppu = pixels per update</i>
+                        <br>
+                        <i>mrand = max random (How many pixels up above)</i>
+                        <br>
+                        <i>wosu = without special units</i>
+                    </p>
+                    <table>
+                        <tr>
+                            <th></th>
+                            <th>Peaceful</th>
+                            <th>Easy</th>
+                            <th>Medium</th>
+                            <th>Hard</th>
+                            <th>Dark Souls</th>
+                        </tr>
+                        <tr>
+                            <td>Player Speed (ppu)</td>
+                            <td>2.25</td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>1.8</td>
+                        </tr>
+                        <tr>
+                            <td>Enemy Speed (ppu)</td>
+                            <td>0.66</td>
+                            <td>0.8</td>
+                            <td>1</td>
+                            <td>1.5</td>
+                            <td>1.8</td>
+                        </tr>
+                        <tr>
+                            <td>Number of Enemies (wosu)</td>
+                            <td>2</td>
+                            <td>3</td>
+                            <td>4</td>
+                            <td>5</td>
+                            <td>6</td>
+                        </tr>
+                        <tr>
+                            <td>Ghost Chance (mrand)</td>
+                            <td>2 000</td>
+                            <td>3 000</td>
+                            <td>5 000</td>
+                            <td>7 500</td>
+                            <td>10 000</td>
+                        </tr>
+                        <tr>
+                            <td>Ghost Speed (ppu)</td>
+                            <td>3</td>
+                            <td>4</td>
+                            <td>5</td>
+                            <td>6.66</td>
+                            <td>8</td>
+                        </tr>
+                        <tr>
+                            <td>Tank Chance (mrand)</td>
+                            <td>4 000</td>
+                            <td>3 000</td>
+                            <td>2 000</td>
+                            <td>1 500</td>
+                            <td>1 000</td>
+                        </tr>
+                        <tr>
+                            <td>Tank Speed (ppu)</td>
+                            <td>0.8</td>
+                            <td>0.9</td>
+                            <td>1</td>
+                            <td>1.1</td>
+                            <td>1.2</td>
+                        </tr>
+                        <tr>
+                            <td>Tank Hit Points</td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>3</td>
+                            <td>4</td>
+                            <td>5</td>
+                        </tr>
+                        <tr>
+                            <td>Knight Chance (mrand)</td>
+                            <td>3 000</td>
+                            <td>3 000</td>
+                            <td>2 000</td>
+                            <td>1 500</td>
+                            <td>1 000</td>
+                        </tr>
+                        <tr>
+                            <td>Knight Speed (ppu)</td>
+                            <td>0.8</td>
+                            <td>0.9</td>
+                            <td>1</td>
+                            <td>1.25</td>
+                            <td>1.5</td>
+                        </tr>
+                        <tr>
+                            <td>Knight Horizontal Speed (ppu)</td>
+                            <td>1.5</td>
+                            <td>1.75</td>
+                            <td>2</td>
+                            <td>2.2</td>
+                            <td>2.5</td>
+                        </tr>
+                        <tr>
+                            <td>Shooter Chance (mrand)</td>
+                            <td>1 000</td>
+                            <td>750</td>
+                            <td>500</td>
+                            <td>400</td>
+                            <td>300</td>
+                        </tr>
+                        <tr>
+                            <td>Shooter Speed (ppu)</td>
+                            <td>0.5</td>
+                            <td>0.5</td>
+                            <td>0.5</td>
+                            <td>0.75</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>Shooter Horizontal Speed (ppu)</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>Shooter Round Speed (ppu)</td>
+                            <td>1.5</td>
+                            <td>1.5</td>
+                            <td>2</td>
+                            <td>3</td>
+                            <td>4</td>
+                        </tr>
+                    </table>
+                </div>
+                <hr class="linebig">
+                <h2>Controls</h2>
+                <div class="controls">
+                </div>
+                <hr class="linebig">
+                <h2>Features</h2>
+                <div class="features">
+                </div>
+                <hr class="linebig">
+                <h2>Changelog</h2>
+                <div class="changelog">
+                    <li>Update v20.0916:22
+                        <ul>--------------------ADDITIONS--------------------</ul>
+                        <ul>- Added New Buttons, Disabling Special Enemies (!Doesn't work RN)</ul>
+                        <ul>--------------------UPDATES--------------------</ul>
+                        <ul>- Updated Script (More compact)</ul>
+                        <ul>- Updated Visual Style</ul>
+                        <ul>--------------------FIXES--------------------</ul>
+                        <ul>-</ul>
+                        <ul>--------------------REMOVES--------------------</ul>
+                        <ul>- Removes useless code</ul>
+                    </li>
+                    <hr class="line">
+                    <li>Update v20.0916:18
+                        <ul>--------------------ADDITIONS--------------------</ul>
+                        <ul>- Added New type of Enemy "Shooter"</ul>
+                        <ul>- Added Health system</ul>
+                        <ul>--------------------UPDATES--------------------</ul>
+                        <ul>- Updated Styles</ul>
+                        <ul>- Updated Difficulties</ul>
+                        <ul>--------------------FIXES--------------------</ul>
+                        <ul>- Fixed disappearing ammo</ul>
+                        <ul>--------------------REMOVES--------------------</ul>
+                        <ul>- Removed console.logs() for debugging</ul>
+                    </li>
+                    <hr class="line">
+                    <li>Update v20.0916:07
+                        <ul>--------------------ADDITIONS--------------------</ul>
+                        <ul>- Added New type of Enemy "Knight"</ul>
+                        <ul>- Added Ammo Counter</ul>
+                        <ul>--------------------UPDATES--------------------</ul>
+                        <ul>-</ul>
+                        <ul>--------------------FIXES--------------------</ul>
+                        <ul>-</ul>
+                        <ul>--------------------REMOVES--------------------</ul>
+                        <ul>-</ul>
+                    </li>
+                    <hr class="line">
+                    <li>Update v20.0915:20
+                        <ul>--------------------ADDITIONS--------------------</ul>
+                        <ul>- Added New type of Enemy "Ghost"</ul>
+                        <ul>- Added New type of Enemy "Tank"</ul>
+                        <ul>- Added Difficulties table</ul>
+                        <ul>- Added Player Ammo</ul>
+                        <ul>--------------------UPDATES--------------------</ul>
+                        <ul>- Updated Game chapter</ul>
+                        <ul>- Updated styles</ul>
+                        <ul>- Updated removing bullets (Cleared from array)</ul>
+                        <ul>--------------------FIXES--------------------</ul>
+                        <ul>- Fixes Game start script</ul>
+                        <ul>- Fixes Ending trigger event</ul>
+                        <ul>--------------------REMOVES--------------------</ul>
+                        <ul>- </ul>
+                    </li>
+                    <hr class="line">
+                    <li>Update v20.0915:16
+                        <ul>--------------------ADDITIONS--------------------</ul>
+                        <ul>- Added "Points to Win" system</ul>
+                        <ul>--------------------UPDATES--------------------</ul>
+                        <ul>- Updated script</ul>
+                        <ul>- Updated styles</ul>
+                        <ul>--------------------FIXES--------------------</ul>
+                        <ul>- </ul>
+                        <ul>--------------------REMOVES--------------------</ul>
+                        <ul>- Removed useless code</ul>
+                    </li>
+                    <hr class="line">
+                    <li>Update v20.0914:21
+                        <ul>--------------------ADDITIONS--------------------</ul>
+                        <ul>-</ul>
+                        <ul>--------------------UPDATES--------------------</ul>
+                        <ul>- Updated README.md</ul>
+                        <ul>--------------------FIXES--------------------</ul>
+                        <ul>- </ul>
+                        <ul>--------------------REMOVES--------------------</ul>
+                        <ul>-</ul>
+                    </li>
+                    <hr class="line">
+                    <li>Update v20.0914:20
+                        <ul>--------------------ADDITIONS--------------------</ul>
+                        <ul>- Added Changelog in info</ul>
+                        <ul>- Added Features chapter in info</ul>
+                        <ul>- Added Controls chapter in info</ul>
+                        <ul>- Added Game chapter in info</ul>
+                        <ul>- Added new difficulties (Peaceful and Dark Souls)</ul>
+                        <ul>--------------------UPDATES--------------------</ul>
+                        <ul>- Updated difficulties (difficulties now change enemy and player speed)</ul>
+                        <ul>- Updated README.md</ul>
+                        <ul>- Updated styles</ul>
+                        <ul>- Updated web</ul>
+                        <ul>--------------------FIXES--------------------</ul>
+                        <ul>- </ul>
+                        <ul>--------------------REMOVES--------------------</ul>
+                        <ul>- Removed Co-op mode</ul>
+                        <ul>- Removed arrow page controls</ul>
+                    </li>
+                    <hr class="line">
+                    <li>Updates before
+                        <ul>--------------------ADDITIONS--------------------</ul>
+                        <ul>- Game</ul>
+                        <ul>--------------------UPDATES--------------------</ul>
+                        <ul>- My Life</ul>
+                        <ul>--------------------FIXES--------------------</ul>
+                        <ul>- Nothing</ul>
+                        <ul>--------------------REMOVES--------------------</ul>
+                        <ul>- My free time</ul>
+                    </li>
+                </div>
             </div>
         </div>
+        </div>
+
     </main>
     <footer>
-        <p>David Stoček</p>
+        <p>David Stoček, Seezo Corp&copy;</p>
     </footer>
     <script src="js/script.js"></script>
 </body>
