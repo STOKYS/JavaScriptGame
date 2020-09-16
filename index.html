@@ -22,13 +22,15 @@
         </div>
         <div id="game">
             <div id="gm1">
-                <p id="scoreboard1">Score: 0</p>
-                <p id="ammocounter1">Ammo: 0</p>
+                <p id="scoreboard1">Score: 0/100</p>
+                <p id="ammocounter1">Ammo: 8/8</p>
+                <p id="heartcounter1">Hearts: 1/1</p>
                 <canvas id="canvas1"></canvas>
             </div>
             <div id="gm2">
-                <p id="scoreboard2">Score: 0</p>
-                <p id="ammocounter2">Ammo: 0</p>
+                <p id="scoreboard2">Score: 0/100</p>
+                <p id="ammocounter2">Ammo: 8/8</p>
+                <p id="heartcounter2">Hearts: 1/1</p>
                 <canvas id="canvas2"></canvas>
             </div>
             <p id="btnstart">Press ENTER to start, BACKSPACE for multiplayer</p>
@@ -50,15 +52,28 @@
                     <button id="btn50">50</button>
                     <button id="btn100">100</button>
                     <button id="btn200">200</button>
-                    <button id="btncustom">CUSTOM</button>
+                    <button id="btncustom">CUSTOM:</button>
                 </div>
                 <form action="/action_page.php" id="form">
                     <input type="text" id="customvalue" name="number">
                 </form>
             </div>
+            <div class="section">
+                <p id="heartsetting">Current hearts: 1</p>
+                <div id="btngroup3">
+                    <button id="btn1">1</button>
+                    <button id="btn2">2</button>
+                    <button id="btn3">3</button>
+                    <button id="btn5">5</button>
+                    <button id="btncustomheart">CUSTOM:</button>
+                </div>
+                <form action="/action_page.php" id="form">
+                    <input type="text" id="customheartvalue" name="number">
+                </form>
+            </div>
         </div>
         </div>
-        <div class="info">
+        <div id="info">
             <h2>Game</h2>
             <div class="game">
                 <h3>Difficulties</h3>
@@ -139,19 +154,59 @@
                     </tr>
                     <tr>
                         <td>Knight Chance (mrand)</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>3 000</td>
+                        <td>3 000</td>
+                        <td>2 000</td>
+                        <td>1 500</td>
+                        <td>1 000</td>
+                    </tr>
+                    <tr>
+                        <td>Knight Speed (ppu)</td>
+                        <td>0.8</td>
+                        <td>0.9</td>
+                        <td>1</td>
+                        <td>1.25</td>
+                        <td>1.5</td>
                     </tr>
                     <tr>
                         <td>Knight Horizontal Speed (ppu)</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>1.5</td>
+                        <td>1.75</td>
+                        <td>2</td>
+                        <td>2.2</td>
+                        <td>2.5</td>
+                    </tr>
+                    <tr>
+                        <td>Shooter Chance (mrand)</td>
+                        <td>1 000</td>
+                        <td>750</td>
+                        <td>500</td>
+                        <td>400</td>
+                        <td>300</td>
+                    </tr>
+                    <tr>
+                        <td>Shooter Speed (ppu)</td>
+                        <td>0.5</td>
+                        <td>0.5</td>
+                        <td>0.5</td>
+                        <td>0.75</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>Shooter Horizontal Speed (ppu)</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>Shooter Round Speed (ppu)</td>
+                        <td>1.5</td>
+                        <td>1.5</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
                     </tr>
                 </table>
             </div>
@@ -168,6 +223,19 @@
             <hr class="linebig">
             <h2>Changelog</h2>
             <div class="changelog">
+                <li>Update v20.0916:18
+                    <ul>--------------------ADDITIONS--------------------</ul>
+                    <ul>- Added New type of Enemy "Shooter"</ul>
+                    <ul>- Added Health system</ul>
+                    <ul>--------------------UPDATES--------------------</ul>
+                    <ul>- Updated Styles</ul>
+                    <ul>- Updated Difficulties</ul>
+                    <ul>--------------------FIXES--------------------</ul>
+                    <ul>- Fixed disappearing ammo</ul>
+                    <ul>--------------------REMOVES--------------------</ul>
+                    <ul>- Removed console.logs() for debugging</ul>
+                </li>
+                <hr class="line">
                 <li>Update v20.0916:07
                     <ul>--------------------ADDITIONS--------------------</ul>
                     <ul>- Added New type of Enemy "Knight"</ul>

@@ -15,12 +15,12 @@ h1{
     display: table;
 }
 
-.info{
-    height: 4000px;
+#info{
+    height: 5000px;
     width: 70%;
     border: 2px solid rgb(32, 32, 32);
     margin: auto;
-    margin-top: 250px;
+    margin-top: 500px;
     background-color: #f1f1f1;
 }
 
@@ -45,12 +45,7 @@ p, h1{
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
-#btngroup1{
-    width: 550px;
-    margin: auto;
-}
-
-#btngroup2{
+#btngroup1, #btngroup2, #btngroup3{
     width: 550px;
     margin: auto;
 }

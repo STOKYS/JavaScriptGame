@@ -25,6 +25,15 @@ let knightSpeed = 1;
 let knightHorizontalSpeedLeft = 2;
 let knightHorizontalSpeedRight = 2;
 let knightChance = -2000;
+let shooterLeft;
+let shooterRight;
+let shooterChance = -500;
+let shooterSpeed = .5
+let shooterShotSpeed = 2;
+let shooterHorizontalSpeedLeft = 1;
+let shooterHorizontalSpeedRight = 1;
+let shooterLeftShot = [];
+let shooterRightShot = [];
 let leftBottom;
 let rightBottom;
 let leftShot = [];
@@ -37,6 +46,9 @@ let difficulty = 4;
 let gameStarted = false;
 let shotsfired = false;
 let isMulti = false;
+let hearts = 1;
+let heartsLeft = hearts;
+let heartsRight = hearts;
 /**/
 
 /*disable arrowkeys*/
@@ -57,7 +69,18 @@ document.getElementById("btnpeace").addEventListener("click", function () {
     tankHit = 2
     tankChance = -4000
     tankSpeed = 0.8
+    knightSpeed = 0.8;
+    knightHorizontalSpeedLeft = 1.5;
+    knightHorizontalSpeedRight = 1.5;
+    knightChance = -3000;
+    shooterChance = -1000;
+    shooterSpeed = .5
+    shooterShotSpeed = 1.5;
+    shooterHorizontalSpeedLeft = 1;
+    shooterHorizontalSpeedRight = 1;
     ammo = 15;
+    ammoLeft = ammo;
+    ammoRight = ammo;
     document.getElementById("difftext").innerHTML = "Current difficulty: Peaceful";
 });
 document.getElementById("btneasy").addEventListener("click", function () {
@@ -69,7 +92,18 @@ document.getElementById("btneasy").addEventListener("click", function () {
     tankHit = 2
     tankChance = -3000
     tankSpeed = 0.9
+    knightSpeed = 0.9;
+    knightHorizontalSpeedLeft = 1.75;
+    knightHorizontalSpeedRight = 1.75;
+    knightChance = -3000;
+    shooterChance = -750;
+    shooterSpeed = .5
+    shooterShotSpeed = 1.5;
+    shooterHorizontalSpeedLeft = 1;
+    shooterHorizontalSpeedRight = 1;
     ammo = 10
+    ammoLeft = ammo;
+    ammoRight = ammo;
     document.getElementById("difftext").innerHTML = "Current difficulty: Easy";
 });
 document.getElementById("btnmed").addEventListener("click", function () {
@@ -81,7 +115,18 @@ document.getElementById("btnmed").addEventListener("click", function () {
     tankHit = 3
     tankChance = -2000
     tankSpeed = 1
+    knightSpeed = 1;
+    knightHorizontalSpeedLeft = 2;
+    knightHorizontalSpeedRight = 2;
+    knightChance = -2000;
+    shooterChance = -500;
+    shooterSpeed = .5
+    shooterShotSpeed = 2;
+    shooterHorizontalSpeedLeft = 1;
+    shooterHorizontalSpeedRight = 1;
     ammo = 8
+    ammoLeft = ammo;
+    ammoRight = ammo;
     document.getElementById("difftext").innerHTML = "Current difficulty: Medium";
 });
 document.getElementById("btnhard").addEventListener("click", function () {
@@ -93,7 +138,18 @@ document.getElementById("btnhard").addEventListener("click", function () {
     tankHit = 4
     tankChance = -1500
     tankSpeed = 1.1
+    knightSpeed = 1.25;
+    knightHorizontalSpeedLeft = 2.2;
+    knightHorizontalSpeedRight = 2.2;
+    knightChance = -1500;
+    shooterChance = -400;
+    shooterSpeed = .75
+    shooterShotSpeed = 3;
+    shooterHorizontalSpeedLeft = 1;
+    shooterHorizontalSpeedRight = 1;
     ammo = 5
+    ammoLeft = ammo;
+    ammoRight = ammo;
     document.getElementById("difftext").innerHTML = "Current difficulty: Hard";
 });
 document.getElementById("btndark").addEventListener("click", function () {
@@ -105,7 +161,18 @@ document.getElementById("btndark").addEventListener("click", function () {
     tankHit = 5
     tankChance = -1000
     tankSpeed = 1.2
+    knightSpeed = 1.5;
+    knightHorizontalSpeedLeft = 2.5;
+    knightHorizontalSpeedRight = 2.5;
+    knightChance = -1000;
+    shooterChance = -300;
+    shooterSpeed = 1
+    shooterShotSpeed = 4;
+    shooterHorizontalSpeedLeft = 1;
+    shooterHorizontalSpeedRight = 1;
     ammo = 3
+    ammoLeft = ammo;
+    ammoRight = ammo;
     document.getElementById("difftext").innerHTML = "Current difficulty: Dark Souls";
 });
 /**/
@@ -143,6 +210,49 @@ document.getElementById("btncustom").addEventListener("click", function () {
 });
 /**/
 
+/*Hearts*/
+document.getElementById("btn1").addEventListener("click", function () {
+    hearts = 1;
+    document.getElementById("heartsetting").innerHTML = "Current hearts: 1";
+    document.getElementById("heartcounter1").innerHTML = "Hearts: 1/1"
+    document.getElementById("heartcounter2").innerHTML = "Hearts: 1/1"
+    heartsRight = hearts;
+    heartsLeft = hearts;
+});
+document.getElementById("btn2").addEventListener("click", function () {
+    hearts = 2;
+    document.getElementById("heartsetting").innerHTML = "Current hearts: 2";
+    document.getElementById("heartcounter1").innerHTML = "Hearts: 2/2"
+    document.getElementById("heartcounter2").innerHTML = "Hearts: 2/2"
+    heartsRight = hearts;
+    heartsLeft = hearts;
+});
+document.getElementById("btn3").addEventListener("click", function () {
+    hearts = 3;
+    document.getElementById("heartsetting").innerHTML = "Current hearts: 3";
+    document.getElementById("heartcounter1").innerHTML = "Hearts: 3/3"
+    document.getElementById("heartcounter2").innerHTML = "Hearts: 3/3"
+    heartsRight = hearts;
+    heartsLeft = hearts;
+});
+document.getElementById("btn5").addEventListener("click", function () {
+    hearts = 5;
+    document.getElementById("heartsetting").innerHTML = "Current hearts: 5";
+    document.getElementById("heartcounter1").innerHTML = "Hearts: 5/5"
+    document.getElementById("heartcounter2").innerHTML = "Hearts: 5/5"
+    heartsRight = hearts;
+    heartsLeft = hearts;
+});
+document.getElementById("btncustomheart").addEventListener("click", function () {
+    hearts = document.getElementById("customheartvalue").value;
+    document.getElementById("heartsetting").innerHTML = "Current hearts: " + hearts;
+    document.getElementById("heartcounter1").innerHTML = "Hearts: " + hearts + "/" + hearts;
+    document.getElementById("heartcounter2").innerHTML = "Hearts: " + hearts + "/" + hearts;
+    heartsRight = hearts;
+    heartsLeft = hearts;
+});
+/**/
+
 /*Starts the game*/
 function startGame(type) {
     switch (type) {
@@ -158,14 +268,19 @@ function startGame(type) {
     document.getElementById("btnstart").style.display = "none";
     document.getElementById("btngroup1").style.display = "none";
     document.getElementById("btngroup2").style.display = "none";
+    document.getElementById("btngroup3").style.display = "none";
+    document.getElementById("heartsetting").style.display = "none";
     document.getElementById("form").style.display = "none";
+    document.getElementById("customheartvalue").style.display = "none";
     document.getElementById("difftext").style.display = "none";
     document.getElementById("difftextscore").style.display = "none";
+    document.getElementById("info").style.display = "none";
     leftBottom = new component(500, 3, "blue", 0, 497);
     playerLeft = new component(20, 15, "blue", 241, 470);
     ghostLeft = new component(30, 30, "pink", Math.floor(Math.random() * 441) + 30, Math.floor(Math.random() * ghostChance) - 2000);
     tankLeft = new component(50, 30, "orange", Math.floor(Math.random() * 441) + 30, Math.floor(Math.random() * tankChance) - 2000);
-    knightLeft = new component(30, 40, "tomato", Math.floor(Math.random() * 441) + 30, Math.floor(Math.random() * knightChance) - 1000);
+    knightLeft = new component(40, 40, "tomato", Math.floor(Math.random() * 441) + 30, Math.floor(Math.random() * knightChance) - 1000);
+    shooterLeft = new component(30, 40, "orangered", Math.floor(Math.random() * 441) + 30, Math.floor(Math.random() * shooterChance) - 1000);
     gameLeft.start();
     gameStarted = true;
     if (isMulti == true) {
@@ -174,6 +289,7 @@ function startGame(type) {
         ghostRight = new component(30, 30, "pink", Math.floor(Math.random() * 441) + 30, Math.floor(Math.random() * ghostChance) - 2000);
         tankRight = new component(50, 30, "orange", Math.floor(Math.random() * 441) + 30, Math.floor(Math.random() * tankChance) - 2000);
         knightRight = new component(50, 30, "tomato", Math.floor(Math.random() * 441) + 30, Math.floor(Math.random() * knightChance) - 1000);
+        shooterRight = new component(30, 40, "orangered", Math.floor(Math.random() * 441) + 30, Math.floor(Math.random() * shooterChance) - 1000);
         gameRight.start();
     }
 }
@@ -260,6 +376,7 @@ function component(width, height, color, x, y) {
 
 /*Updates*/
 function updateGameArea() {
+
     Counter++;
     if (Counter == 201 && enemiesLeft.length < difficulty) {
         Counter = 1;
@@ -287,18 +404,18 @@ function updateGameArea() {
     }
     for (i = 0; i < enemiesLeft.length; i += 1) {
         if (playerLeft.crashWith(enemiesLeft[i]) && gameStarted == true) {
-            gameStarted = false;
-            gameLeft.stop();
-            gameRight.stop();
-            end(1);
+            heartsLeft -= 1
+            document.getElementById("heartcounter1").innerHTML = "Hearts: " + heartsLeft + "/" + hearts;
+            enemiesLeft[i].y = -40;
+            enemiesLeft[i].x = Math.floor(Math.random() * 441) + 30;
         }
     }
     for (i = 0; i < enemiesLeft.length; i += 1) {
         if (leftBottom.crashWith(enemiesLeft[i]) && gameStarted == true) {
-            gameStarted = false;
-            gameLeft.stop();
-            gameRight.stop();
-            end(1);
+            heartsLeft -= 1
+            document.getElementById("heartcounter1").innerHTML = "Hearts: " + heartsLeft + "/" + hearts;
+            enemiesLeft[i].y = -40;
+            enemiesLeft[i].x = Math.floor(Math.random() * 441) + 30;
         }
     }
     for (i = 0; i < enemiesLeft.length; i += 1) {
@@ -308,47 +425,115 @@ function updateGameArea() {
                 enemiesLeft[i].x = Math.floor(Math.random() * 441) + 30;
                 leftShot.splice(u, 1)
                 ammoLeft++
-                document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft
+                document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft + "/" + ammo
                 leftScore++;
                 document.getElementById("scoreboard1").innerHTML = "Score: " + leftScore + "/" + pointsToWin;
             }
         }
     }
     for (u = 0; u < leftShot.length; u += 1) {
-        if (gameStarted == true && shotsfired == true && (ghostLeft.y > -50 && leftShot[u].crashWith(ghostLeft)) || ghostLeft.y > 600) {
+        if (gameStarted == true && shotsfired == true && ghostLeft.y > -50 && leftShot[u].crashWith(ghostLeft)) {
             ghostLeft.y = Math.floor(Math.random() * ghostChance) - 2000;
             ghostLeft.x = Math.floor(Math.random() * 441) + 30;
-            console.log("Fast enemy created at " + ghostLeft.y)
             leftShot.splice(u, 1)
             ammoLeft++
-            document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft
+            document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft + "/" + ammo
             leftScore += 5;
             document.getElementById("scoreboard1").innerHTML = "Score: " + leftScore + "/" + pointsToWin;
         }
+    }
+    if (ghostLeft.y > 600) {
+        ghostLeft.y = Math.floor(Math.random() * ghostChance) - 2000;
+        ghostLeft.x = Math.floor(Math.random() * 441) + 30;
+    }
+    for (u = 0; u < leftShot.length; u += 1) {
+        if (gameStarted == true && shotsfired == true && knightLeft.y > -50 && leftShot[u].crashWith(knightLeft)) {
+            knightLeft.y = Math.floor(Math.random() * knightChance) - 2000;
+            knightLeft.x = Math.floor(Math.random() * 441) + 30;
+            leftShot.splice(u, 1)
+            ammoLeft++
+            document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft + "/" + ammo
+            leftScore += 3;
+            document.getElementById("scoreboard1").innerHTML = "Score: " + leftScore + "/" + pointsToWin;
+        }
+    }
+    for (u = 0; u < leftShot.length; u += 1) {
+        if (gameStarted == true && shotsfired == true && shooterLeft.y > 0 && leftShot[u].crashWith(shooterLeft)) {
+            shooterLeft.y = Math.floor(Math.random() * shooterChance) - 2000;
+            shooterLeft.x = Math.floor(Math.random() * 441) + 30;
+            leftShot.splice(u, 1)
+            ammoLeft++
+            document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft + "/" + ammo
+            leftScore += 3;
+            document.getElementById("scoreboard1").innerHTML = "Score: " + leftScore + "/" + pointsToWin;
+        }
+    }
+    for (j = 0; j < shooterLeftShot.length; j += 1) {
+        if (gameStarted == true && shooterLeft.y > -50 && shooterLeftShot[j].crashWith(playerLeft)) {
+            heartsLeft -= 1
+            document.getElementById("heartcounter1").innerHTML = "Hearts: " + heartsLeft + "/" + hearts;
+            shooterLeftShot.splice(j, 1)
+        }
+    }
+    if (leftBottom.crashWith(tankLeft) && gameStarted == true) {
+        heartsLeft -= 1
+        document.getElementById("heartcounter1").innerHTML = "Hearts: " + heartsLeft + "/" + hearts;
+        tankLeft.y = Math.floor(Math.random() * tankChance) - 2000;
+        tankLeft.x = Math.floor(Math.random() * 441) + 30;
+    }
+    if (leftBottom.crashWith(knightLeft) && gameStarted == true) {
+        heartsLeft -= 1
+        document.getElementById("heartcounter1").innerHTML = "Hearts: " + heartsLeft + "/" + hearts;
+        knightLeft.y = Math.floor(Math.random() * knightChance) - 2000;
+        knightLeft.x = Math.floor(Math.random() * 441) + 30;
+    }
+    if (leftBottom.crashWith(shooterLeft) && gameStarted == true) {
+        heartsLeft -= 1
+        document.getElementById("heartcounter1").innerHTML = "Hearts: " + heartsLeft + "/" + hearts;
+        shooterLeft.y = Math.floor(Math.random() * shooterChance) - 2000;
+        shooterLeft.x = Math.floor(Math.random() * 441) + 30;
+    }
+    if (playerLeft.crashWith(tankLeft) && gameStarted == true) {
+        heartsLeft -= 1
+        document.getElementById("heartcounter1").innerHTML = "Hearts: " + heartsLeft + "/" + hearts;
+        tankLeft.y = Math.floor(Math.random() * tankChance) - 2000;
+        tankLeft.x = Math.floor(Math.random() * 441) + 30;
+    }
+    if (playerLeft.crashWith(knightLeft) && gameStarted == true) {
+        heartsLeft -= 1
+        document.getElementById("heartcounter1").innerHTML = "Hearts: " + heartsLeft + "/" + hearts;
+        knightLeft.y = Math.floor(Math.random() * knightChance) - 2000;
+        knightLeft.x = Math.floor(Math.random() * 441) + 30;
+    }
+    if (playerLeft.crashWith(shooterLeft) && gameStarted == true) {
+        heartsLeft -= 1
+        document.getElementById("heartcounter1").innerHTML = "Hearts: " + heartsLeft + "/" + hearts;
+        tankLeft.y = Math.floor(Math.random() * tankChance) - 2000;
+        tankLeft.x = Math.floor(Math.random() * 441) + 30;
     }
     for (u = 0; u < leftShot.length; u += 1) {
         if (gameStarted == true && shotsfired == true && tankLeft.y > -10 && leftShot[u].crashWith(tankLeft) && tankHitLeft == 1) {
             tankLeft.y = Math.floor(Math.random() * tankChance) - 2000;
             tankLeft.x = Math.floor(Math.random() * 441) + 30;
-            console.log("Fast enemy created at " + tankLeft.y)
             tankHitLeft = tankHit;
             leftShot.splice(u, 1)
             ammoLeft++
-            document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft
+            document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft + "/" + ammo
             leftScore += 3;
             document.getElementById("scoreboard1").innerHTML = "Score: " + leftScore + "/" + pointsToWin;
         } else if (gameStarted == true && shotsfired == true && tankLeft.y > -50 && leftShot[u].crashWith(tankLeft) && tankHitLeft > 1) {
             tankHitLeft--;
             leftShot.splice(u, 1)
             ammoLeft++
-            document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft
+            document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft + "/" + ammo
         }
     }
+
     for (u = 0; u < leftShot.length; u += 1) {
         if (leftShot[u].y < -10) {
             leftShot.splice(u, 1)
             ammoLeft++
-            document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft
+            document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft + "/" + ammo
         }
     }
     gameLeft.clear();
@@ -362,13 +547,30 @@ function updateGameArea() {
             leftShot[u].updateLeft();
         }
     }
+    for (n = 0; n < shooterLeftShot.length; n += 1) {
+        shooterLeftShot[n].y += shooterShotSpeed;
+        shooterLeftShot[n].updateLeft();
+    }
+    for (n = 0; n < shooterLeftShot.length; n += 1) {
+        if (shooterLeftShot[n].y > 500)
+            shooterLeftShot.splice(n, 1)
+    }
+    if (gameStarted == true && heartsLeft == 0) {
+        gameStarted = false;
+        gameRight.stop();
+        gameLeft.stop();
+        end(1);
+    }
+    shooterLeftMove()
+    shooterLeft.x += shooterHorizontalSpeedLeft;
+    shooterLeft.y += shooterSpeed;
+    shooterLeft.updateLeft()
     knightBordersLeft();
     knightLeft.y += knightSpeed;
     knightLeft.x += knightHorizontalSpeedLeft;
     knightLeft.updateLeft();
     tankLeft.y += tankSpeed;
     tankLeft.updateLeft();
-    console.log(tankHitLeft)
     ghostLeft.y += ghostSpeed;
     ghostLeft.updateLeft();
     playerLeft.newPos();
@@ -382,18 +584,18 @@ function updateGameArea() {
         }
         for (k = 0; k < enemiesRight.length; k += 1) {
             if (playerRight.crashWith(enemiesRight[k]) && gameStarted == true) {
-                gameStarted = false;
-                gameRight.stop();
-                gameLeft.stop();
-                end(2);
+                heartsRight -= 1
+                document.getElementById("heartcounter2").innerHTML = "Hearts: " + heartsRight + "/" + hearts;
+                enemiesRight[k].y = -40;
+                enemiesRight[k].x = Math.floor(Math.random() * 441) + 30;
             }
         }
         for (k = 0; k < enemiesRight.length; k += 1) {
             if (rightBottom.crashWith(enemiesRight[k]) && gameStarted == true) {
-                gameStarted = false;
-                gameRight.stop();
-                gameLeft.stop();
-                end(2);
+                enemiesRight[k].y = -40;
+                enemiesRight[k].x = Math.floor(Math.random() * 441) + 30;
+                heartsRight -= 1
+                document.getElementById("heartcounter2").innerHTML = "Hearts: " + heartsRight + "/" + hearts;
             }
         }
         for (k = 0; k < enemiesRight.length; k += 1) {
@@ -403,21 +605,54 @@ function updateGameArea() {
                     enemiesRight[k].x = Math.floor(Math.random() * 441) + 30;
                     rightShot.splice(j, 1)
                     ammoRight++
-                    document.getElementById("ammocounter2").innerHTML = "Ammo: " + ammoRight
+                    document.getElementById("ammocounter2").innerHTML = "Ammo: " + ammoRight + "/" + ammo
                     rightScore++;
                     document.getElementById("scoreboard2").innerHTML = "Score: " + rightScore + "/" + pointsToWin;
                 }
             }
         }
         for (j = 0; j < rightShot.length; j += 1) {
-            if (gameStarted == true && shotsfired == true && (ghostRight.y > -10 && rightShot[j].crashWith(ghostRight)) || ghostRight.y > 600) {
+            if (gameStarted == true && shotsfired == true && ghostRight.y > -10 && rightShot[j].crashWith(ghostRight)) {
                 ghostRight.y = Math.floor(Math.random() * ghostChance) - 2000;
                 ghostRight.x = Math.floor(Math.random() * 441) + 30;
                 rightShot.splice(j, 1)
                 ammoRight++
-                document.getElementById("ammocounter2").innerHTML = "Ammo: " + ammoRight
+                document.getElementById("ammocounter2").innerHTML = "Ammo: " + ammoRight + "/" + ammo
                 rightScore += 5;
                 document.getElementById("scoreboard2").innerHTML = "Score: " + rightScore + "/" + pointsToWin;
+            }
+        }
+        if (ghostRight.y > 600) {
+            ghostRight.y = Math.floor(Math.random() * ghostChance) - 2000;
+            ghostRight.x = Math.floor(Math.random() * 441) + 30;
+        }
+        for (j = 0; j < rightShot.length; j += 1) {
+            if (gameStarted == true && shotsfired == true && knightRight.y > -50 && rightShot[j].crashWith(knightRight)) {
+                knightRight.y = Math.floor(Math.random() * knightChance) - 2000;
+                knightRight.x = Math.floor(Math.random() * 441) + 30;
+                rightShot.splice(j, 1)
+                ammoright++
+                document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoright + "/" + ammo
+                rightScore += 3;
+                document.getElementById("scoreboard1").innerHTML = "Score: " + rightScore + "/" + pointsToWin;
+            }
+        }
+        for (j = 0; j < rightShot.length; j += 1) {
+            if (gameStarted == true && shotsfired == true && shooterRight.y > 0 && rightShot[j].crashWith(shooterRight)) {
+                shooterRight.y = Math.floor(Math.random() * shooterChance) - 2000;
+                shooterRight.x = Math.floor(Math.random() * 441) + 30;
+                rightShot.splice(j, 1)
+                ammoright++
+                document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoright + "/" + ammo
+                rightScore += 3;
+                document.getElementById("scoreboard1").innerHTML = "Score: " + rightScore + "/" + pointsToWin;
+            }
+        }
+        for (j = 0; j < shooterRightShot.length; j += 1) {
+            if (gameStarted == true && shooterRight.y > -50 && shooterRightShot[j].crashWith(playerRight)) {
+                heartsRight -= 1
+                document.getElementById("heartcounter2").innerHTML = "Hearts: " + heartsRight + "/" + hearts;
+                shooterRightShot.splice(j, 1)
             }
         }
         for (j = 0; j < rightShot.length; j += 1) {
@@ -427,21 +662,57 @@ function updateGameArea() {
                 tankHitRight = tankHit;
                 rightShot.splice(j, 1)
                 ammoRight++
-                document.getElementById("ammocounter2").innerHTML = "Ammo: " + ammoRight
+                document.getElementById("ammocounter2").innerHTML = "Ammo: " + ammoRight + "/" + ammo
                 rightScore += 3;
                 document.getElementById("scoreboard2").innerHTML = "Score: " + rightScore + "/" + pointsToWin;
             } else if (gameStarted == true && shotsfired == true && tankRight.y > -50 && rightShot[j].crashWith(tankRight) && tankHitRight > 1) {
                 rightShot.splice(j, 1)
                 ammoRight++
-                document.getElementById("ammocounter2").innerHTML = "Ammo: " + ammoRight
+                document.getElementById("ammocounter2").innerHTML = "Ammo: " + ammoRight + "/" + ammo
                 tankHitRight--;
             }
+        }
+        if (rightBottom.crashWith(tankRight) && gameStarted == true) {
+            heartsRight -= 1
+            document.getElementById("heartcounter2").innerHTML = "Hearts: " + heartsRight + "/" + hearts;
+            tankRight.y = Math.floor(Math.random() * tankChance) - 2000;
+            tankRight.x = Math.floor(Math.random() * 441) + 30;
+        }
+        if (rightBottom.crashWith(knightRight) && gameStarted == true) {
+            heartsRight -= 1
+            document.getElementById("heartcounter2").innerHTML = "Hearts: " + heartsRight + "/" + hearts;
+            knightRight.y = Math.floor(Math.random() * knightChance) - 2000;
+            knightRight.x = Math.floor(Math.random() * 441) + 30;
+        }
+        if (rightBottom.crashWith(shooterRight) && gameStarted == true) {
+            heartsRight -= 1
+            document.getElementById("heartcounter2").innerHTML = "Hearts: " + heartsRight + "/" + hearts;
+            shooterRight.y = Math.floor(Math.random() * shooterChance) - 2000;
+            shooterRight.x = Math.floor(Math.random() * 441) + 30;
+        }
+        if (playerRight.crashWith(tankRight) && gameStarted == true) {
+            heartsRight -= 1
+            document.getElementById("heartcounter2").innerHTML = "Hearts: " + heartsRight + "/" + hearts;
+            tankRight.y = Math.floor(Math.random() * tankChance) - 2000;
+            tankRight.x = Math.floor(Math.random() * 441) + 30;
+        }
+        if (playerRight.crashWith(knightRight) && gameStarted == true) {
+            heartsRight -= 1
+            document.getElementById("heartcounter2").innerHTML = "Hearts: " + heartsRight + "/" + hearts;
+            knightRight.y = Math.floor(Math.random() * knightChance) - 2000;
+            knightRight.x = Math.floor(Math.random() * 441) + 30;
+        }
+        if (playerRight.crashWith(shooterRight) && gameStarted == true) {
+            heartsRight -= 1
+            document.getElementById("heartcounter2").innerHTML = "Hearts: " + heartsRight + "/" + hearts;
+            shooterRight.y = Math.floor(Math.random() * shooterChance) - 2000;
+            shooterRight.x = Math.floor(Math.random() * 441) + 30;
         }
         for (j = 0; j < rightShot.length; j += 1) {
             if (rightShot[j].y < -10) {
                 rightShot.splice(j, 1)
                 ammoRight++
-                document.getElementById("ammocounter2").innerHTML = "Ammo: " + ammoRight
+                document.getElementById("ammocounter2").innerHTML = "Ammo: " + ammoRight + "/" + ammo
             }
         }
         gameRight.clear();
@@ -455,10 +726,28 @@ function updateGameArea() {
                 rightShot[j].updateRight();
             }
         }
+        for (m = 0; m < shooterRightShot.length; m += 1) {
+            shooterRightShot[m].y += shooterShotSpeed;
+            shooterRightShot[m].updateRight();
+        }
+        for (m = 0; m < shooterRightShot.length; m += 1) {
+            if (shooterLRightShot[m].y > 500)
+                shooterRightShot.splice(n, 1)
+        }
+        if (gameStarted == true && heartsRight == 0) {
+            gameStarted = false;
+            gameRight.stop();
+            gameLeft.stop();
+            end(1);
+        }
+        shooterRightMove()
+        shooterRight.x += shooterHorizontalSpeedRight;
+        shooterRight.y += shooterSpeed;
+        shooterRight.updateRight()
         knightBordersRight();
         knightRight.y += knightSpeed;
         knightRight.x += knightHorizontalSpeedRight;
-        knightLeft.updateLeft();
+        knightLeft.updateRight();
         tankRight.y += tankSpeed;
         tankRight.updateRight();
         ghostRight.y += ghostSpeed;
@@ -468,6 +757,39 @@ function updateGameArea() {
     }
 }
 /*Updates*/
+
+function shooterLeftMove() {
+    if (shooterLeft.x > playerLeft.x) {
+        shooterHorizontalSpeedLeft = -1
+    } else if (shooterLeft.x < playerLeft.x) {
+        shooterHorizontalSpeedLeft = 1
+    } else {
+        shooterHorizontalSpeedLeft = 0
+        if (shooterLeft.y > -10) {
+            if (shooterLeftShot.length == 0) {
+                shooterLeftShot.push(new component(3, 10, "black", shooterLeft.x + 15, shooterLeft.y + 20));
+            }
+        }
+
+    }
+}
+
+function shooterRightMove() {
+
+    if (shooterRight.x > playerRight.x) {
+        shooterHorizontalSpeedRight = -1
+    } else if (shooterRight.x < playerRight.x) {
+        shooterHorizontalSpeedRight = 1
+    } else {
+        shooterHorizontalSpeedRight = 0
+        if (shooterRight.y > -10) {
+            if (shooterRightShot.length == 0) {
+                shooterRightShot.push(new component(3, 10, "black", shooterRight.x + 15, shooterRight.y + 20));
+            }
+        }
+    }
+
+}
 
 function knightBordersLeft() {
     if (knightLeft.x < 30 || knightLeft.x > 470) {
@@ -537,7 +859,7 @@ document.onkeydown = function movement(key) {
                 if (leftShot.length < ammo) {
                     leftShot.push(new component(3, 10, "blue", playerLeft.x + 10, playerLeft.y - 10));
                     ammoLeft--;
-                    document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft;
+                    document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft + "/" + ammo;
                 }
                 break;
         }
@@ -560,7 +882,7 @@ document.onkeydown = function movement(key) {
                     if (rightShot.length < ammo) {
                         rightShot.push(new component(3, 10, "green", playerRight.x + 10, playerRight.y - 10));
                         ammoRight--;
-                        document.getElementById("ammocounter2").innerHTML = "Ammo: " + ammoRight
+                        document.getElementById("ammocounter2").innerHTML = "Ammo: " + ammoRight + "/" + ammo
                     }
                     break;
             }
