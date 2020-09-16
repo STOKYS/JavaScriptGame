@@ -19,6 +19,12 @@ let tankHit = 3;
 let tankHitLeft = tankHit;
 let tankHitRight = tankHit;
 let tankSpeed = 1;
+let knightLeft;
+let knightRight;
+let knightSpeed = 1;
+let knightHorizontalSpeedLeft = 2;
+let knightHorizontalSpeedRight = 2;
+let knightChance = -2000;
 let leftBottom;
 let rightBottom;
 let leftShot = [];
@@ -159,8 +165,7 @@ function startGame(type) {
     playerLeft = new component(20, 15, "blue", 241, 470);
     ghostLeft = new component(30, 30, "pink", Math.floor(Math.random() * 441) + 30, Math.floor(Math.random() * ghostChance) - 2000);
     tankLeft = new component(50, 30, "orange", Math.floor(Math.random() * 441) + 30, Math.floor(Math.random() * tankChance) - 2000);
-    console.log(tankLeft.y)
-    console.log(tankHitLeft)
+    knightLeft = new component(30, 40, "tomato", Math.floor(Math.random() * 441) + 30, Math.floor(Math.random() * knightChance) - 1000);
     gameLeft.start();
     gameStarted = true;
     if (isMulti == true) {
@@ -168,6 +173,7 @@ function startGame(type) {
         playerRight = new component(20, 15, "green", 241, 470);
         ghostRight = new component(30, 30, "pink", Math.floor(Math.random() * 441) + 30, Math.floor(Math.random() * ghostChance) - 2000);
         tankRight = new component(50, 30, "orange", Math.floor(Math.random() * 441) + 30, Math.floor(Math.random() * tankChance) - 2000);
+        knightRight = new component(50, 30, "tomato", Math.floor(Math.random() * 441) + 30, Math.floor(Math.random() * knightChance) - 1000);
         gameRight.start();
     }
 }
@@ -302,7 +308,7 @@ function updateGameArea() {
                 enemiesLeft[i].x = Math.floor(Math.random() * 441) + 30;
                 leftShot.splice(u, 1)
                 ammoLeft++
-                document.getElementById("ammocounter1").innerHTML="Ammo: " + ammoLeft
+                document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft
                 leftScore++;
                 document.getElementById("scoreboard1").innerHTML = "Score: " + leftScore + "/" + pointsToWin;
             }
@@ -315,7 +321,7 @@ function updateGameArea() {
             console.log("Fast enemy created at " + ghostLeft.y)
             leftShot.splice(u, 1)
             ammoLeft++
-            document.getElementById("ammocounter1").innerHTML="Ammo: " + ammoLeft
+            document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft
             leftScore += 5;
             document.getElementById("scoreboard1").innerHTML = "Score: " + leftScore + "/" + pointsToWin;
         }
@@ -328,21 +334,21 @@ function updateGameArea() {
             tankHitLeft = tankHit;
             leftShot.splice(u, 1)
             ammoLeft++
-            document.getElementById("ammocounter1").innerHTML="Ammo: " + ammoLeft
+            document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft
             leftScore += 3;
             document.getElementById("scoreboard1").innerHTML = "Score: " + leftScore + "/" + pointsToWin;
         } else if (gameStarted == true && shotsfired == true && tankLeft.y > -50 && leftShot[u].crashWith(tankLeft) && tankHitLeft > 1) {
             tankHitLeft--;
             leftShot.splice(u, 1)
             ammoLeft++
-            document.getElementById("ammocounter1").innerHTML="Ammo: " + ammoLeft
+            document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft
         }
     }
     for (u = 0; u < leftShot.length; u += 1) {
         if (leftShot[u].y < -10) {
             leftShot.splice(u, 1)
             ammoLeft++
-            document.getElementById("ammocounter1").innerHTML="Ammo: " + ammoLeft
+            document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft
         }
     }
     gameLeft.clear();
@@ -356,6 +362,10 @@ function updateGameArea() {
             leftShot[u].updateLeft();
         }
     }
+    knightBordersLeft();
+    knightLeft.y += knightSpeed;
+    knightLeft.x += knightHorizontalSpeedLeft;
+    knightLeft.updateLeft();
     tankLeft.y += tankSpeed;
     tankLeft.updateLeft();
     console.log(tankHitLeft)
@@ -393,7 +403,7 @@ function updateGameArea() {
                     enemiesRight[k].x = Math.floor(Math.random() * 441) + 30;
                     rightShot.splice(j, 1)
                     ammoRight++
-                    document.getElementById("ammocounter2").innerHTML="Ammo: " + ammoRight
+                    document.getElementById("ammocounter2").innerHTML = "Ammo: " + ammoRight
                     rightScore++;
                     document.getElementById("scoreboard2").innerHTML = "Score: " + rightScore + "/" + pointsToWin;
                 }
@@ -405,7 +415,7 @@ function updateGameArea() {
                 ghostRight.x = Math.floor(Math.random() * 441) + 30;
                 rightShot.splice(j, 1)
                 ammoRight++
-                document.getElementById("ammocounter2").innerHTML="Ammo: " + ammoRight
+                document.getElementById("ammocounter2").innerHTML = "Ammo: " + ammoRight
                 rightScore += 5;
                 document.getElementById("scoreboard2").innerHTML = "Score: " + rightScore + "/" + pointsToWin;
             }
@@ -417,13 +427,13 @@ function updateGameArea() {
                 tankHitRight = tankHit;
                 rightShot.splice(j, 1)
                 ammoRight++
-                document.getElementById("ammocounter2").innerHTML="Ammo: " + ammoRight
+                document.getElementById("ammocounter2").innerHTML = "Ammo: " + ammoRight
                 rightScore += 3;
                 document.getElementById("scoreboard2").innerHTML = "Score: " + rightScore + "/" + pointsToWin;
             } else if (gameStarted == true && shotsfired == true && tankRight.y > -50 && rightShot[j].crashWith(tankRight) && tankHitRight > 1) {
                 rightShot.splice(j, 1)
                 ammoRight++
-                document.getElementById("ammocounter2").innerHTML="Ammo: " + ammoRight
+                document.getElementById("ammocounter2").innerHTML = "Ammo: " + ammoRight
                 tankHitRight--;
             }
         }
@@ -431,7 +441,7 @@ function updateGameArea() {
             if (rightShot[j].y < -10) {
                 rightShot.splice(j, 1)
                 ammoRight++
-                document.getElementById("ammocounter2").innerHTML="Ammo: " + ammoRight
+                document.getElementById("ammocounter2").innerHTML = "Ammo: " + ammoRight
             }
         }
         gameRight.clear();
@@ -445,6 +455,10 @@ function updateGameArea() {
                 rightShot[j].updateRight();
             }
         }
+        knightBordersRight();
+        knightRight.y += knightSpeed;
+        knightRight.x += knightHorizontalSpeedRight;
+        knightLeft.updateLeft();
         tankRight.y += tankSpeed;
         tankRight.updateRight();
         ghostRight.y += ghostSpeed;
@@ -454,6 +468,19 @@ function updateGameArea() {
     }
 }
 /*Updates*/
+
+function knightBordersLeft() {
+    if (knightLeft.x < 30 || knightLeft.x > 470) {
+        knightHorizontalSpeedLeft *= -1;
+    }
+}
+
+function knightBordersRight() {
+    if (knightRight.x < 30 || knightRight.x > 470) {
+        knightHorizontalSpeedRight *= -1;
+    }
+}
+
 
 /* Ending */
 function end(ending) {
@@ -510,7 +537,7 @@ document.onkeydown = function movement(key) {
                 if (leftShot.length < ammo) {
                     leftShot.push(new component(3, 10, "blue", playerLeft.x + 10, playerLeft.y - 10));
                     ammoLeft--;
-                    document.getElementById("ammocounter1").innerHTML="Ammo: " + ammoLeft;
+                    document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft;
                 }
                 break;
         }
@@ -533,7 +560,7 @@ document.onkeydown = function movement(key) {
                     if (rightShot.length < ammo) {
                         rightShot.push(new component(3, 10, "green", playerRight.x + 10, playerRight.y - 10));
                         ammoRight--;
-                        document.getElementById("ammocounter2").innerHTML="Ammo: " + ammoRight
+                        document.getElementById("ammocounter2").innerHTML = "Ammo: " + ammoRight
                     }
                     break;
             }
