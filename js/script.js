@@ -47,6 +47,20 @@ let hearts = 1,
 let gameStarted = false,
     shotsfired = false,
     isMulti = false;
+let bossLeft,
+    bossRight,
+    bossLeftHP = 200,
+    bossRightHP = 200,
+    bossLeftShot = [],
+    bossRightShot = [],
+    isBossLeft = false,
+    isBossRight = false;
+let allowKnight = true,
+    allowTank = true,
+    allowShooter = true,
+    allowGhost = true,
+    allowBoss = false;
+
 window.addEventListener("keydown", function (e) {
     if ([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
         e.preventDefault();
@@ -215,6 +229,57 @@ document.querySelectorAll("#btn1, #btn2, #btn3, #btn5, #btncustomheart").forEach
         document.getElementById("heartcounter2").innerHTML = "Hearts: " + heartsRight + "/" + hearts;
     })
 })
+document.querySelectorAll("#enableGhosts, #enableTanks, #enableKnights, #enableShooters, #enableBoss").forEach(item => {
+    item.addEventListener("click", event => {
+        switch (item.id) {
+            case "enableGhosts":
+                if (allowGhost == true) {
+                    allowGhost = false
+                    document.getElementById("enableGhosts").innerHTML = "Ghosts: Off"
+                } else {
+                    allowGhost = true
+                    document.getElementById("enableGhosts").innerHTML = "Ghosts: On"
+                }
+                break;
+            case "enableTanks":
+                if (allowTank == true) {
+                    allowTank = false
+                    document.getElementById("enableTanks").innerHTML = "Tanks: Off"
+                } else {
+                    allowTank = true
+                    document.getElementById("enableTanks").innerHTML = "Tanks: On"
+                }
+                break;
+            case "enableKnights":
+                if (allowKnight == true) {
+                    allowKnight = false
+                    document.getElementById("enableKnights").innerHTML = "Knights: Off"
+                } else {
+                    allowKnight = true
+                    document.getElementById("enableKnights").innerHTML = "Knights: On"
+                }
+                break;
+            case "enableShooters":
+                if (allowShooter == true) {
+                    allowShooter = false
+                    document.getElementById("enableShooters").innerHTML = "Shooters: Off"
+                } else {
+                    allowShooter = true
+                    document.getElementById("enableShooters").innerHTML = "Shooters: On"
+                }
+                break;
+            case "enableBoss":
+                if (allowBoss == true) {
+                    allowBoss = false
+                    document.getElementById("enableBoss").innerHTML = "Bosses: Off"
+                } else {
+                    allowBoss = true
+                    document.getElementById("enableBoss").innerHTML = "Bosses: On"
+                }
+                break;
+        }
+    })
+})
 
 function startGame(type) {
     switch (type) {
@@ -326,33 +391,47 @@ function component(width, height, color, x, y) {
 function updateGameArea() {
     gameLeft.clear();
     if ((pointsToWin <= rightScore && isMulti == true) || (pointsToWin <= leftScore) || (heartsLeft == 0) || (isMulti == true && heartsRight == 0)) {
-        gameStarted = false;
-        gameRight.stop();
-        gameLeft.stop();
-        if ((pointsToWin <= leftScore) || heartsRight < hearts) {
+        if (pointsToWin <= leftScore) {
+            if (allowBoss == true) {
+                bossBattleLeft()
+            } else {
+                end(1)
+            }
+        }
+        if (pointsToWin <= rightScore) {
+            if (allowBoss == true) {
+                bossBattleRight()
+            } else {
+                end(2)
+            }
+        }
+        if (heartsRight == 0) {
             end(1);
-        } else if ((pointsToWin <= rightScore && isMulti == true) || heartsLeft < hearts) {
+        }
+        if (heartsLeft == 0) {
             end(2)
         }
     }
-    for (i = 0; i < enemiesLeft.length; i += 1) {
-        if ((leftBottom.crashWith(enemiesLeft[i]) || playerLeft.crashWith(enemiesLeft[i])) && gameStarted == true) {
-            heartsLeft -= 1
-            document.getElementById("heartcounter1").innerHTML = "Hearts: " + heartsLeft + "/" + hearts;
-        }
-        for (u = 0; u < leftShot.length; u += 1) {
-            if (gameStarted == true && shotsfired == true && leftShot[u].crashWith(enemiesLeft[i])) {
-                leftShot.splice(u, 1)
-                ammoLeft++
-                leftScore++;
-                enemiesLeft[i].y = -40;
-                enemiesLeft[i].x = Math.floor(Math.random() * 441) + 30;
-                document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft + "/" + ammo
-                document.getElementById("scoreboard1").innerHTML = "Score: " + leftScore + "/" + pointsToWin;
+    if (isBossLeft == false) {
+        for (i = 0; i < enemiesLeft.length; i += 1) {
+            if ((leftBottom.crashWith(enemiesLeft[i]) || playerLeft.crashWith(enemiesLeft[i])) && gameStarted == true) {
+                heartsLeft -= 1
+                document.getElementById("heartcounter1").innerHTML = "Hearts: " + heartsLeft + "/" + hearts;
             }
+            for (u = 0; u < leftShot.length; u += 1) {
+                if (gameStarted == true && shotsfired == true && leftShot[u].crashWith(enemiesLeft[i])) {
+                    leftShot.splice(u, 1)
+                    ammoLeft++
+                    leftScore++;
+                    enemiesLeft[i].y = -40;
+                    enemiesLeft[i].x = Math.floor(Math.random() * 441) + 30;
+                    document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft + "/" + ammo
+                    document.getElementById("scoreboard1").innerHTML = "Score: " + leftScore + "/" + pointsToWin;
+                }
+            }
+            enemiesLeft[i].y += eneSpeed;
+            enemiesLeft[i].updateLeft();
         }
-        enemiesLeft[i].y += eneSpeed;
-        enemiesLeft[i].updateLeft();
     }
     for (u = 0; u < leftShot.length; u += 1) {
         if (gameStarted == true && shotsfired == true && ghostLeft.y > -50 && leftShot[u].crashWith(ghostLeft)) {
@@ -375,17 +454,15 @@ function updateGameArea() {
         } else if (gameStarted == true && shotsfired == true && tankLeft.y > -50 && leftShot[u].crashWith(tankLeft) && tankHitLeft > 1) {
             tankHitLeft--;
         }
-        if (leftShot[u].crashWith(tankLeft) && tankHitLeft == 0 || leftShot[u].crashWith(shooterLeft) || leftShot[u].crashWith(knightLeft) || leftShot[u].crashWith(ghostLeft)) {
+        if ((leftShot[u].crashWith(tankLeft) && tankHitLeft == 0) || leftShot[u].crashWith(shooterLeft) || leftShot[u].crashWith(knightLeft) || leftShot[u].crashWith(ghostLeft)) {
             leftScore += 3;
             leftShot.splice(u, 1)
             ammoLeft++
         }
-        if (leftShot[u].y < -10) {
+        if (leftShot[u].y < -10 && isBossLeft == false) {
             leftShot.splice(u, 1)
             ammoLeft++
         }
-        leftShot[u].y += -3;
-        leftShot[u].updateLeft();
         document.getElementById("scoreboard1").innerHTML = "Score: " + leftScore + "/" + pointsToWin;
         document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft + "/" + ammo
     }
@@ -437,28 +514,73 @@ function updateGameArea() {
     knightBordersLeft(), knightLeft.y += knightSpeed, knightLeft.x += knightHorizontalSpeedLeft, knightLeft.updateLeft();
     tankLeft.y += tankSpeed, tankLeft.updateLeft();
     ghostLeft.y += ghostSpeed, ghostLeft.updateLeft();
+    for (u = 0; u < leftShot.length; u += 1) {
+        leftShot[u].y += -3;
+        leftShot[u].updateLeft();
+    }
     leftBottom.updateLeft();
     playerLeft.newPos(), playerLeft.updateLeft();
-    if (isMulti == true) {
-        gameRight.clear()
-        for (g = 0; g < enemiesRight.length; g += 1) {
-            if ((rightBottom.crashWith(enemiesRight[g]) || playerRight.crashWith(enemiesRight[g])) && gameStarted == true) {
-                heartsRight -= 1
-                document.getElementById("heartcounter2").innerHTML = "Hearts: " + heartsRight + "/" + hearts;
+    if (isBossLeft == true) {
+        for (u = 0; u < leftShot.length; u += 1) {
+            if (leftShot[u].crashWith(bossLeft)) {
+                leftShot.splice(u, 1)
+                ammoLeft++
+                document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft + "/" + ammo
+                bossLeftHP--
+                console.log(bossLeftHP)
+                document.getElementById("prg1").style.width = bossLeftHP / 2 + "%"
             }
-            for (r = 0; r < rightShot.length; r += 1) {
-                if (gameStarted == true && shotsfired == true && rightShot[r].crashWith(enemiesRight[g])) {
-                    rightShot.splice(r, 1)
-                    ammoRight++
-                    rightScore++;
-                    enemiesRight[g].y = -40;
-                    enemiesRight[g].x = Math.floor(Math.random() * 441) + 30;
-                    document.getElementById("ammocounter2").innerHTML = "Ammo: " + ammoRight + "/" + ammo
-                    document.getElementById("scoreboard2").innerHTML = "Score: " + rightScore + "/" + pointsToWin;
+        }
+        if (bossLeft.crashWith(playerLeft)) {
+            end(2)
+        }
+        if (bossLeftHP <= 0) {
+            end(1)
+        }
+        bossLeft.y += 0
+        if (bossLeft.y < 0) {
+            bossLeft.y += .1
+        } else if (bossLeft.y > 0) {
+            if (bossLeftShot.length == 0) {
+                bossLeftShot.push(new component(3, 10, "black", playerLeft.x + 10, bossLeft.y + 20));
+            }
+            for (n = 0; n < bossLeftShot.length; n += 1) {
+                if (bossLeftShot[n].crashWith(playerLeft)) {
+                    heartsLeft -= 1
+                    document.getElementById("heartcounter1").innerHTML = "Hearts: " + heartsLeft + "/" + hearts;
+                    bossLeftShot.splice(n, 1)
+                }
+                bossLeftShot[n].y += 5;
+                bossLeftShot[n].updateLeft();
+                if (bossLeftShot[n].y > 500) {
+                    bossLeftShot.splice(n, 1)
                 }
             }
-            enemiesRight[g].y += eneSpeed;
-            enemiesRight[g].updateRight();
+        }
+        bossLeft.updateLeft()
+    }
+    if (isMulti == true) {
+        gameRight.clear()
+        if (isBossRight == false) {
+            for (g = 0; g < enemiesRight.length; g += 1) {
+                if ((rightBottom.crashWith(enemiesRight[g]) || playerRight.crashWith(enemiesRight[g])) && gameStarted == true) {
+                    heartsRight -= 1
+                    document.getElementById("heartcounter2").innerHTML = "Hearts: " + heartsRight + "/" + hearts;
+                }
+                for (r = 0; r < rightShot.length; r += 1) {
+                    if (gameStarted == true && shotsfired == true && rightShot[r].crashWith(enemiesRight[g])) {
+                        rightShot.splice(r, 1)
+                        ammoRight++
+                        rightScore++;
+                        enemiesRight[g].y = -40;
+                        enemiesRight[g].x = Math.floor(Math.random() * 441) + 30;
+                        document.getElementById("ammocounter2").innerHTML = "Ammo: " + ammoRight + "/" + ammo
+                        document.getElementById("scoreboard2").innerHTML = "Score: " + rightScore + "/" + pointsToWin;
+                    }
+                }
+                enemiesRight[g].y += eneSpeed;
+                enemiesRight[g].updateRight();
+            }
         }
         for (r = 0; r < rightShot.length; r += 1) {
             if (gameStarted == true && shotsfired == true && ghostRight.y > -50 && rightShot[r].crashWith(ghostRight)) {
@@ -490,8 +612,6 @@ function updateGameArea() {
                 rightShot.splice(r, 1)
                 ammoRight++
             }
-            rightShot[r].y += -3;
-            rightShot[r].updateRight();
             document.getElementById("scoreboard2").innerHTML = "Score: " + rightScore + "/" + pointsToWin;
             document.getElementById("ammocounter2").innerHTML = "Ammo: " + ammoRight + "/" + ammo
         }
@@ -539,13 +659,72 @@ function updateGameArea() {
             ghostRight.y = Math.floor(Math.random() * ghostChance) - 2000;
             ghostRight.x = Math.floor(Math.random() * 441) + 30;
         }
+        shooterRightMove(), shooterRight.x += shooterHorizontalSpeedRight, shooterRight.y += shooterSpeed, shooterRight.updateRight()
+        knightBordersRight(), knightRight.y += knightSpeed, knightRight.x += knightHorizontalSpeedRight, knightRight.updateRight();
+        tankRight.y += tankSpeed, tankRight.updateRight();
+        ghostRight.y += ghostSpeed, ghostRight.updateRight();
+        for (r = 0; r < rightShot.length; r += 1) {
+            rightShot[r].y += -3;
+            rightShot[r].updateRight();
+        }
+        rightBottom.updateRight();
+        playerRight.newPos(), playerRight.updateRight();
+        if (isBossRight == true) {
+            for (u = 0; u < rightShot.length; u += 1) {
+                if (rightShot[u].crashWith(bossRight)) {
+                    rightShot.splice(u, 1)
+                    ammoRight++
+                    document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoRight + "/" + ammo
+                    bossRightHP--
+                    console.log(bossRightHP)
+                    document.getElementById("prg1").style.width = bossRightHP / 2 + "%"
+                }
+            }
+            if (bossRight.crashWith(playerRight)) {
+                end(1)
+            }
+            if (bossRightHP <= 0) {
+                end(2)
+            }
+            bossRight.y += 0
+            if (bossRight.y < 0) {
+                bossRight.y += .1
+            } else if (bossRight.y > 0) {
+                if (bossRightShot.length == 0) {
+                    bossRightShot.push(new component(3, 10, "black", playerRight.x + 10, bossRight.y + 20));
+                }
+                for (n = 0; n < bossRightShot.length; n += 1) {
+                    if (bossRightShot[n].crashWith(playerRight)) {
+                        heartsRight -= 1
+                        document.getElementById("heartcounter1").innerHTML = "Hearts: " + heartsRight + "/" + hearts;
+                        bossRightShot.splice(n, 1)
+                    }
+                    bossRightShot[n].y += 5;
+                    bossRightShot[n].updateRight();
+                    if (bossRightShot[n].y > 500) {
+                        bossRightShot.splice(n, 1)
+                    }
+                }
+            }
+            bossRight.updateRight()
+        }
     }
-    shooterRightMove(), shooterRight.x += shooterHorizontalSpeedRight, shooterRight.y += shooterSpeed, shooterRight.updateRight()
-    knightBordersRight(), knightRight.y += knightSpeed, knightRight.x += knightHorizontalSpeedRight, knightRight.updateRight();
-    tankRight.y += tankSpeed, tankRight.updateRight();
-    ghostRight.y += ghostSpeed, ghostRight.updateRight();
-    rightBottom.updateRight();
-    playerRight.newPos(), playerRight.updateRight();
+}
+
+function bossBattleLeft() {
+    if (isBossLeft == false) {
+        bossLeft = new component(500, 50, "black", 0, -60);
+        isBossLeft = true;
+        document.getElementById("prgbar1").style.display = "block"
+    }
+}
+
+function bossBattleRight() {
+    if (isBossRight == false) {
+        bossRight = new component(500, 50, "black", 0, -60);
+        isBossRight = true;
+        document.getElementById("prgbar2").style.display = "block"
+    }
 }
 
 function shooterLeftMove() {
@@ -593,6 +772,9 @@ function knightBordersRight() {
 }
 
 function end(ending) {
+    gameStarted = false;
+    gameRight.stop();
+    gameLeft.stop();
     if (isMulti == true) {
         switch (ending) {
             case 2:

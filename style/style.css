@@ -18,7 +18,7 @@ h1 {
 }
 
 #info {
-    height: 5500px;
+    height: 6000px;
     width: 60%;
     border: 2px solid rgb(32, 32, 32);
     margin: auto;
@@ -49,16 +49,33 @@ h1 {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
-div>.prgbar{
-    width: 200px;
-    border: 2px solid black;
-    background-color: antiquewhite;
+#prgbar1{
+    display: none;
+    width: 90%;
+    margin: auto;
+    border: 1px solid black;
+    height: 22px;
+    background-color: white;
+}
+#prgbar2{
+    display: none;
+    width: 90%;
+    margin: auto;
+    border: 1px solid black;
+    height: 22px;
+    background-color: white;
 }
 
-hr>.prg{
-    border-bottom: 50px solid white;
+#prg1{
+    border-bottom: 20px solid rgb(100, 25, 25);
     margin: 0px;
-    width: 50%;
+    width: 100%;
+}
+
+#prg2{
+    border-bottom: 20px solid black;
+    margin: 0px;
+    width: 100%;
 }
 
 footer {
