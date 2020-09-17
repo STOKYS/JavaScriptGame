@@ -47,13 +47,11 @@ let hearts = 1,
 let gameStarted = false,
     shotsfired = false,
     isMulti = false;
-
 window.addEventListener("keydown", function (e) {
     if ([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
         e.preventDefault();
     }
 }, false);
-
 document.querySelectorAll("#btnpeace, #btneasy, #btnmed, #btnhard, #btndark").forEach(item => {
     item.addEventListener("click", event => {
         if (item.id == "btnpeace") {
@@ -167,7 +165,6 @@ document.querySelectorAll("#btnpeace, #btneasy, #btnmed, #btnhard, #btndark").fo
         document.getElementById("ammocounter2").innerHTML = "Ammo: " + ammoRight + "/" + ammo;
     })
 })
-
 document.querySelectorAll("#btndisabled, #btn50, #btn100, #btn200, #btncustom").forEach(item => {
     item.addEventListener("click", event => {
         switch (item.id) {
@@ -192,7 +189,6 @@ document.querySelectorAll("#btndisabled, #btn50, #btn100, #btn200, #btncustom").
         document.getElementById("scoreboard2").innerHTML = "Score: 0/" + pointsToWin
     })
 })
-
 document.querySelectorAll("#btn1, #btn2, #btn3, #btn5, #btncustomheart").forEach(item => {
     item.addEventListener("click", event => {
         switch (item.id) {
@@ -256,7 +252,6 @@ function startGame(type) {
         gameRight.start();
     }
 }
-
 let gameLeft = {
     canvasLeft: document.getElementById("canvas1"),
     start: function () {
@@ -274,7 +269,6 @@ let gameLeft = {
         clearInterval(this.intervalLeft);
     }
 }
-
 let gameRight = {
     canvasRight: document.getElementById("canvas2"),
     start: function () {
@@ -330,6 +324,7 @@ function component(width, height, color, x, y) {
 }
 
 function updateGameArea() {
+    gameLeft.clear();
     if ((pointsToWin <= rightScore && isMulti == true) || (pointsToWin <= leftScore) || (heartsLeft == 0) || (isMulti == true && heartsRight == 0)) {
         gameStarted = false;
         gameRight.stop();
@@ -341,35 +336,25 @@ function updateGameArea() {
         }
     }
     for (i = 0; i < enemiesLeft.length; i += 1) {
-        if (playerLeft.crashWith(enemiesLeft[i]) && gameStarted == true) {
+        if ((leftBottom.crashWith(enemiesLeft[i]) || playerLeft.crashWith(enemiesLeft[i])) && gameStarted == true) {
             heartsLeft -= 1
             document.getElementById("heartcounter1").innerHTML = "Hearts: " + heartsLeft + "/" + hearts;
-            enemiesLeft[i].y = -40;
-            enemiesLeft[i].x = Math.floor(Math.random() * 441) + 30;
         }
-    }
-    for (i = 0; i < enemiesLeft.length; i += 1) {
-        if (leftBottom.crashWith(enemiesLeft[i]) && gameStarted == true) {
-            heartsLeft -= 1
-            document.getElementById("heartcounter1").innerHTML = "Hearts: " + heartsLeft + "/" + hearts;
-            enemiesLeft[i].y = -40;
-            enemiesLeft[i].x = Math.floor(Math.random() * 441) + 30;
-        }
-    }
-    for (i = 0; i < enemiesLeft.length; i += 1) {
         for (u = 0; u < leftShot.length; u += 1) {
             if (gameStarted == true && shotsfired == true && leftShot[u].crashWith(enemiesLeft[i])) {
-                enemiesLeft[i].y = -40;
-                enemiesLeft[i].x = Math.floor(Math.random() * 441) + 30;
                 leftShot.splice(u, 1)
                 ammoLeft++
-                document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft + "/" + ammo
                 leftScore++;
+                enemiesLeft[i].y = -40;
+                enemiesLeft[i].x = Math.floor(Math.random() * 441) + 30;
+                document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft + "/" + ammo
                 document.getElementById("scoreboard1").innerHTML = "Score: " + leftScore + "/" + pointsToWin;
             }
         }
+        enemiesLeft[i].y += eneSpeed;
+        enemiesLeft[i].updateLeft();
     }
-    for (u = 0; u < leftShot.length; u += 1) { /*Bullet*/
+    for (u = 0; u < leftShot.length; u += 1) {
         if (gameStarted == true && shotsfired == true && ghostLeft.y > -50 && leftShot[u].crashWith(ghostLeft)) {
             ghostLeft.y = Math.floor(Math.random() * ghostChance) - 2000;
             ghostLeft.x = Math.floor(Math.random() * 441) + 30;
@@ -390,7 +375,7 @@ function updateGameArea() {
         } else if (gameStarted == true && shotsfired == true && tankLeft.y > -50 && leftShot[u].crashWith(tankLeft) && tankHitLeft > 1) {
             tankHitLeft--;
         }
-        if (leftShot[u].crashWith(tankLeft) && tankHitLeft > 1 || leftShot[u].crashWith(shooterLeft) || leftShot[u].crashWith(knightLeft) || leftShot[u].crashWith(ghostLeft)) {
+        if (leftShot[u].crashWith(tankLeft) && tankHitLeft == 0 || leftShot[u].crashWith(shooterLeft) || leftShot[u].crashWith(knightLeft) || leftShot[u].crashWith(ghostLeft)) {
             leftScore += 3;
             leftShot.splice(u, 1)
             ammoLeft++
@@ -399,275 +384,168 @@ function updateGameArea() {
             leftShot.splice(u, 1)
             ammoLeft++
         }
-        if (shotsfired == true) {
-            leftShot[u].y += -3;
-            leftShot[u].updateLeft();
-        }
+        leftShot[u].y += -3;
+        leftShot[u].updateLeft();
         document.getElementById("scoreboard1").innerHTML = "Score: " + leftScore + "/" + pointsToWin;
         document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft + "/" + ammo
-    } /*Bullet*/
+    }
+    for (n = 0; n < shooterLeftShot.length; n += 1) {
+        if (gameStarted == true && shooterLeft.y > -50 && shooterLeftShot[n].crashWith(playerLeft)) {
+            heartsLeft -= 1
+            document.getElementById("heartcounter1").innerHTML = "Hearts: " + heartsLeft + "/" + hearts;
+            shooterLeftShot.splice(n, 1)
+        }
+        if (shooterLeftShot[n].y > 500) {
+            shooterLeftShot.splice(n, 1)
+        }
+        shooterLeftShot[n].y += shooterShotSpeed;
+        shooterLeftShot[n].updateLeft();
+    }
+    if ((playerLeft.crashWith(tankLeft) || playerLeft.crashWith(knightLeft) || playerLeft.crashWith(shooterLeft) || leftBottom.crashWith(tankLeft) || leftBottom.crashWith(knightLeft) || leftBottom.crashWith(shooterLeft)) && gameStarted == true) {
+        heartsLeft -= 1
+        document.getElementById("heartcounter1").innerHTML = "Hearts: " + heartsLeft + "/" + hearts;
+        if (leftBottom.crashWith(tankLeft)) {
+            tankLeft.y = Math.floor(Math.random() * tankChance) - 2000;
+            tankLeft.x = Math.floor(Math.random() * 441) + 30;
+        }
+        if (leftBottom.crashWith(knightLeft)) {
+            knightLeft.y = Math.floor(Math.random() * knightChance) - 2000;
+            knightLeft.x = Math.floor(Math.random() * 441) + 30;
+        }
+        if (leftBottom.crashWith(shooterLeft)) {
+            shooterLeft.y = Math.floor(Math.random() * shooterChance) - 2000;
+            shooterLeft.x = Math.floor(Math.random() * 441) + 30;
+        }
+        if (playerLeft.crashWith(tankLeft)) {
+            tankLeft.y = Math.floor(Math.random() * tankChance) - 2000;
+            tankLeft.x = Math.floor(Math.random() * 441) + 30;
+        }
+        if (playerLeft.crashWith(knightLeft)) {
+            knightLeft.y = Math.floor(Math.random() * knightChance) - 2000;
+            knightLeft.x = Math.floor(Math.random() * 441) + 30;
+        }
+        if (playerLeft.crashWith(shooterLeft)) {
+            shooterLeft.y = Math.floor(Math.random() * shooterChance) - 2000;
+            shooterLeft.x = Math.floor(Math.random() * 441) + 30;
+        }
+    }
     if (ghostLeft.y > 600) {
         ghostLeft.y = Math.floor(Math.random() * ghostChance) - 2000;
         ghostLeft.x = Math.floor(Math.random() * 441) + 30;
     }
-    for (j = 0; j < shooterLeftShot.length; j += 1) {
-        if (gameStarted == true && shooterLeft.y > -50 && shooterLeftShot[j].crashWith(playerLeft)) {
-            heartsLeft -= 1
-            document.getElementById("heartcounter1").innerHTML = "Hearts: " + heartsLeft + "/" + hearts;
-            shooterLeftShot.splice(j, 1)
-        }
-    }
-    /*if ((leftBottom.crashWith(tankLeft) || leftBottom.crashWith(knightLeft) || leftBottom.crashWith(shooterLeft)) && gameStarted == true) {
-        heartsLeft -= 1
-        document.getElementById("heartcounter1").innerHTML = "Hearts: " + heartsLeft + "/" + hearts;
-        resetPos()
-    */
-    if (leftBottom.crashWith(tankLeft) && gameStarted == true) {
-        heartsLeft -= 1
-        document.getElementById("heartcounter1").innerHTML = "Hearts: " + heartsLeft + "/" + hearts;
-        tankLeft.y = Math.floor(Math.random() * tankChance) - 2000;
-        tankLeft.x = Math.floor(Math.random() * 441) + 30;
-    }
-    if (leftBottom.crashWith(knightLeft) && gameStarted == true) {
-        heartsLeft -= 1
-        document.getElementById("heartcounter1").innerHTML = "Hearts: " + heartsLeft + "/" + hearts;
-        knightLeft.y = Math.floor(Math.random() * knightChance) - 2000;
-        knightLeft.x = Math.floor(Math.random() * 441) + 30;
-    }
-    if (leftBottom.crashWith(shooterLeft) && gameStarted == true) {
-        heartsLeft -= 1
-        document.getElementById("heartcounter1").innerHTML = "Hearts: " + heartsLeft + "/" + hearts;
-        shooterLeft.y = Math.floor(Math.random() * shooterChance) - 2000;
-        shooterLeft.x = Math.floor(Math.random() * 441) + 30;
-    }
-    if (playerLeft.crashWith(tankLeft) && gameStarted == true) {
-        heartsLeft -= 1
-        document.getElementById("heartcounter1").innerHTML = "Hearts: " + heartsLeft + "/" + hearts;
-        tankLeft.y = Math.floor(Math.random() * tankChance) - 2000;
-        tankLeft.x = Math.floor(Math.random() * 441) + 30;
-    }
-    if (playerLeft.crashWith(knightLeft) && gameStarted == true) {
-        heartsLeft -= 1
-        document.getElementById("heartcounter1").innerHTML = "Hearts: " + heartsLeft + "/" + hearts;
-        knightLeft.y = Math.floor(Math.random() * knightChance) - 2000;
-        knightLeft.x = Math.floor(Math.random() * 441) + 30;
-    }
-    if (playerLeft.crashWith(shooterLeft) && gameStarted == true) {
-        heartsLeft -= 1
-        document.getElementById("heartcounter1").innerHTML = "Hearts: " + heartsLeft + "/" + hearts;
-        tankLeft.y = Math.floor(Math.random() * tankChance) - 2000;
-        tankLeft.x = Math.floor(Math.random() * 441) + 30;
-    }
-    for (u = 0; u < leftShot.length; u += 1) {
-        if (leftShot[u].y < -10) {
-            leftShot.splice(u, 1)
-            ammoLeft++
-            document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft + "/" + ammo
-        }
-    }
-    gameLeft.clear();
-    for (i = 0; i < enemiesLeft.length; i += 1) {
-        enemiesLeft[i].y += eneSpeed;
-        enemiesLeft[i].updateLeft();
-    }
-    for (n = 0; n < shooterLeftShot.length; n += 1) {
-        shooterLeftShot[n].y += shooterShotSpeed;
-        shooterLeftShot[n].updateLeft();
-    }
-    for (n = 0; n < shooterLeftShot.length; n += 1) {
-        if (shooterLeftShot[n].y > 500)
-            shooterLeftShot.splice(n, 1)
-    }
-    shooterLeftMove()
-    shooterLeft.x += shooterHorizontalSpeedLeft;
-    shooterLeft.y += shooterSpeed;
-    shooterLeft.updateLeft()
-    knightBordersLeft();
-    knightLeft.y += knightSpeed;
-    knightLeft.x += knightHorizontalSpeedLeft;
-    knightLeft.updateLeft();
-    tankLeft.y += tankSpeed;
-    tankLeft.updateLeft();
-    ghostLeft.y += ghostSpeed;
-    ghostLeft.updateLeft();
+    shooterLeftMove(), shooterLeft.x += shooterHorizontalSpeedLeft, shooterLeft.y += shooterSpeed, shooterLeft.updateLeft()
+    knightBordersLeft(), knightLeft.y += knightSpeed, knightLeft.x += knightHorizontalSpeedLeft, knightLeft.updateLeft();
+    tankLeft.y += tankSpeed, tankLeft.updateLeft();
+    ghostLeft.y += ghostSpeed, ghostLeft.updateLeft();
     leftBottom.updateLeft();
-    playerLeft.newPos();
-    playerLeft.updateLeft();
+    playerLeft.newPos(), playerLeft.updateLeft();
     if (isMulti == true) {
-        if (Counter == 201 && enemiesRight.length < difficulty) {
-            Counter = 1;
-            enemiesRight.push(new component(30, 30, "red", Math.floor(Math.random() * 441) + 30, -40));
-        } else if (Counter == 1) {
-            enemiesRight.push(new component(30, 30, "red", Math.floor(Math.random() * 441) + 30, -40));
-        }
-        for (k = 0; k < enemiesRight.length; k += 1) {
-            if (playerRight.crashWith(enemiesRight[k]) && gameStarted == true) {
-                heartsRight -= 1
-                document.getElementById("heartcounter2").innerHTML = "Hearts: " + heartsRight + "/" + hearts;
-                enemiesRight[k].y = -40;
-                enemiesRight[k].x = Math.floor(Math.random() * 441) + 30;
-            }
-        }
-        for (k = 0; k < enemiesRight.length; k += 1) {
-            if (rightBottom.crashWith(enemiesRight[k]) && gameStarted == true) {
-                enemiesRight[k].y = -40;
-                enemiesRight[k].x = Math.floor(Math.random() * 441) + 30;
+        gameRight.clear()
+        for (g = 0; g < enemiesRight.length; g += 1) {
+            if ((rightBottom.crashWith(enemiesRight[g]) || playerRight.crashWith(enemiesRight[g])) && gameStarted == true) {
                 heartsRight -= 1
                 document.getElementById("heartcounter2").innerHTML = "Hearts: " + heartsRight + "/" + hearts;
             }
-        }
-        for (k = 0; k < enemiesRight.length; k += 1) {
-            for (j = 0; j < rightShot.length; j += 1) {
-                if (gameStarted == true && shotsfired == true && rightShot[j].crashWith(enemiesRight[k])) {
-                    enemiesRight[k].y = -40;
-                    enemiesRight[k].x = Math.floor(Math.random() * 441) + 30;
-                    rightShot.splice(j, 1)
+            for (r = 0; r < rightShot.length; r += 1) {
+                if (gameStarted == true && shotsfired == true && rightShot[r].crashWith(enemiesRight[g])) {
+                    rightShot.splice(r, 1)
                     ammoRight++
-                    document.getElementById("ammocounter2").innerHTML = "Ammo: " + ammoRight + "/" + ammo
                     rightScore++;
+                    enemiesRight[g].y = -40;
+                    enemiesRight[g].x = Math.floor(Math.random() * 441) + 30;
+                    document.getElementById("ammocounter2").innerHTML = "Ammo: " + ammoRight + "/" + ammo
                     document.getElementById("scoreboard2").innerHTML = "Score: " + rightScore + "/" + pointsToWin;
                 }
             }
+            enemiesRight[g].y += eneSpeed;
+            enemiesRight[g].updateRight();
         }
-        for (j = 0; j < rightShot.length; j += 1) {
-            if (gameStarted == true && shotsfired == true && ghostRight.y > -10 && rightShot[j].crashWith(ghostRight)) {
+        for (r = 0; r < rightShot.length; r += 1) {
+            if (gameStarted == true && shotsfired == true && ghostRight.y > -50 && rightShot[r].crashWith(ghostRight)) {
                 ghostRight.y = Math.floor(Math.random() * ghostChance) - 2000;
                 ghostRight.x = Math.floor(Math.random() * 441) + 30;
-                rightShot.splice(j, 1)
+                rightScore += 2;
+            }
+            if (gameStarted == true && shotsfired == true && knightRight.y > -50 && rightShot[r].crashWith(knightRight)) {
+                knightRight.y = Math.floor(Math.random() * knightChance) - 2000;
+                knightRight.x = Math.floor(Math.random() * 441) + 30;
+            }
+            if (gameStarted == true && shotsfired == true && shooterRight.y > 0 && rightShot[r].crashWith(shooterRight)) {
+                shooterRight.y = Math.floor(Math.random() * shooterChance) - 2000;
+                shooterRight.x = Math.floor(Math.random() * 441) + 30;
+            }
+            if (gameStarted == true && shotsfired == true && tankRight.y > -10 && rightShot[r].crashWith(tankRight) && tankHitRight == 1) {
+                tankRight.y = Math.floor(Math.random() * tankChance) - 2000;
+                tankRight.x = Math.floor(Math.random() * 441) + 30;
+                tankHitRight = tankHit;
+            } else if (gameStarted == true && shotsfired == true && tankRight.y > -50 && rightShot[r].crashWith(tankRight) && tankHitRight > 1) {
+                tankHitRight--;
+            }
+            if (rightShot[r].crashWith(tankRight) && tankHitRight == 0 || rightShot[r].crashWith(shooterRight) || rightShot[r].crashWith(knightRight) || rightShot[r].crashWith(ghostRight)) {
+                rightScore += 3;
+                rightShot.splice(r, 1)
                 ammoRight++
-                document.getElementById("ammocounter2").innerHTML = "Ammo: " + ammoRight + "/" + ammo
-                rightScore += 5;
-                document.getElementById("scoreboard2").innerHTML = "Score: " + rightScore + "/" + pointsToWin;
+            }
+            if (rightShot[r].y < -10) {
+                rightShot.splice(r, 1)
+                ammoRight++
+            }
+            rightShot[r].y += -3;
+            rightShot[r].updateRight();
+            document.getElementById("scoreboard2").innerHTML = "Score: " + rightScore + "/" + pointsToWin;
+            document.getElementById("ammocounter2").innerHTML = "Ammo: " + ammoRight + "/" + ammo
+        }
+        for (m = 0; m < shooterRightShot.length; m += 1) {
+            if (gameStarted == true && shooterRight.y > -50 && shooterRightShot[m].crashWith(playerRight)) {
+                heartsRight -= 1
+                document.getElementById("heartcounter2").innerHTML = "Hearts: " + heartsRight + "/" + hearts;
+                shooterRightShot.splice(m, 1)
+            }
+            if (shooterRightShot[m].y > 500) {
+                shooterRightShot.splice(n, 1)
+            }
+            shooterRightShot[m].y += shooterShotSpeed;
+            shooterRightShot[m].updateRight();
+        }
+        if ((playerRight.crashWith(tankRight) || playerRight.crashWith(knightRight) || playerRight.crashWith(shooterRight) || rightBottom.crashWith(tankRight) || rightBottom.crashWith(knightRight) || rightBottom.crashWith(shooterRight)) && gameStarted == true) {
+            heartsRight -= 1
+            document.getElementById("heartcounter2").innerHTML = "Hearts: " + heartsRight + "/" + hearts;
+            if (rightBottom.crashWith(tankRight)) {
+                tankRight.y = Math.floor(Math.random() * tankChance) - 2000;
+                tankRight.x = Math.floor(Math.random() * 441) + 30;
+            }
+            if (rightBottom.crashWith(knightRight)) {
+                knightRight.y = Math.floor(Math.random() * knightChance) - 2000;
+                knightRight.x = Math.floor(Math.random() * 441) + 30;
+            }
+            if (rightBottom.crashWith(shooterRight)) {
+                shooterRight.y = Math.floor(Math.random() * shooterChance) - 2000;
+                shooterRight.x = Math.floor(Math.random() * 441) + 30;
+            }
+            if (playerRight.crashWith(tankRight)) {
+                tankRight.y = Math.floor(Math.random() * tankChance) - 2000;
+                tankRight.x = Math.floor(Math.random() * 441) + 30;
+            }
+            if (playerRight.crashWith(knightRight)) {
+                knightRight.y = Math.floor(Math.random() * knightChance) - 2000;
+                knightRight.x = Math.floor(Math.random() * 441) + 30;
+            }
+            if (playerRight.crashWith(shooterRight)) {
+                shooterRight.y = Math.floor(Math.random() * shooterChance) - 2000;
+                shooterRight.x = Math.floor(Math.random() * 441) + 30;
             }
         }
         if (ghostRight.y > 600) {
             ghostRight.y = Math.floor(Math.random() * ghostChance) - 2000;
             ghostRight.x = Math.floor(Math.random() * 441) + 30;
         }
-        for (j = 0; j < rightShot.length; j += 1) {
-            if (gameStarted == true && shotsfired == true && knightRight.y > -50 && rightShot[j].crashWith(knightRight)) {
-                knightRight.y = Math.floor(Math.random() * knightChance) - 2000;
-                knightRight.x = Math.floor(Math.random() * 441) + 30;
-                rightShot.splice(j, 1)
-                ammoright++
-                document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoright + "/" + ammo
-                rightScore += 3;
-                document.getElementById("scoreboard1").innerHTML = "Score: " + rightScore + "/" + pointsToWin;
-            }
-        }
-        for (j = 0; j < rightShot.length; j += 1) {
-            if (gameStarted == true && shotsfired == true && shooterRight.y > 0 && rightShot[j].crashWith(shooterRight)) {
-                shooterRight.y = Math.floor(Math.random() * shooterChance) - 2000;
-                shooterRight.x = Math.floor(Math.random() * 441) + 30;
-                rightShot.splice(j, 1)
-                ammoright++
-                document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoright + "/" + ammo
-                rightScore += 3;
-                document.getElementById("scoreboard1").innerHTML = "Score: " + rightScore + "/" + pointsToWin;
-            }
-        }
-        for (j = 0; j < shooterRightShot.length; j += 1) {
-            if (gameStarted == true && shooterRight.y > -50 && shooterRightShot[j].crashWith(playerRight)) {
-                heartsRight -= 1
-                document.getElementById("heartcounter2").innerHTML = "Hearts: " + heartsRight + "/" + hearts;
-                shooterRightShot.splice(j, 1)
-            }
-        }
-        for (j = 0; j < rightShot.length; j += 1) {
-            if (gameStarted == true && shotsfired == true && tankRight.y > -50 && rightShot[j].crashWith(tankRight) && tankHitRight == 1) {
-                tankRight.y = Math.floor(Math.random() * tankChance) - 2000;
-                tankRight.x = Math.floor(Math.random() * 441) + 30;
-                tankHitRight = tankHit;
-                rightShot.splice(j, 1)
-                ammoRight++
-                document.getElementById("ammocounter2").innerHTML = "Ammo: " + ammoRight + "/" + ammo
-                rightScore += 3;
-                document.getElementById("scoreboard2").innerHTML = "Score: " + rightScore + "/" + pointsToWin;
-            } else if (gameStarted == true && shotsfired == true && tankRight.y > -50 && rightShot[j].crashWith(tankRight) && tankHitRight > 1) {
-                rightShot.splice(j, 1)
-                ammoRight++
-                document.getElementById("ammocounter2").innerHTML = "Ammo: " + ammoRight + "/" + ammo
-                tankHitRight--;
-            }
-        }
-        if (rightBottom.crashWith(tankRight) && gameStarted == true) {
-            heartsRight -= 1
-            document.getElementById("heartcounter2").innerHTML = "Hearts: " + heartsRight + "/" + hearts;
-            tankRight.y = Math.floor(Math.random() * tankChance) - 2000;
-            tankRight.x = Math.floor(Math.random() * 441) + 30;
-        }
-        if (rightBottom.crashWith(knightRight) && gameStarted == true) {
-            heartsRight -= 1
-            document.getElementById("heartcounter2").innerHTML = "Hearts: " + heartsRight + "/" + hearts;
-            knightRight.y = Math.floor(Math.random() * knightChance) - 2000;
-            knightRight.x = Math.floor(Math.random() * 441) + 30;
-        }
-        if (rightBottom.crashWith(shooterRight) && gameStarted == true) {
-            heartsRight -= 1
-            document.getElementById("heartcounter2").innerHTML = "Hearts: " + heartsRight + "/" + hearts;
-            shooterRight.y = Math.floor(Math.random() * shooterChance) - 2000;
-            shooterRight.x = Math.floor(Math.random() * 441) + 30;
-        }
-        if (playerRight.crashWith(tankRight) && gameStarted == true) {
-            heartsRight -= 1
-            document.getElementById("heartcounter2").innerHTML = "Hearts: " + heartsRight + "/" + hearts;
-            tankRight.y = Math.floor(Math.random() * tankChance) - 2000;
-            tankRight.x = Math.floor(Math.random() * 441) + 30;
-        }
-        if (playerRight.crashWith(knightRight) && gameStarted == true) {
-            heartsRight -= 1
-            document.getElementById("heartcounter2").innerHTML = "Hearts: " + heartsRight + "/" + hearts;
-            knightRight.y = Math.floor(Math.random() * knightChance) - 2000;
-            knightRight.x = Math.floor(Math.random() * 441) + 30;
-        }
-        if (playerRight.crashWith(shooterRight) && gameStarted == true) {
-            heartsRight -= 1
-            document.getElementById("heartcounter2").innerHTML = "Hearts: " + heartsRight + "/" + hearts;
-            shooterRight.y = Math.floor(Math.random() * shooterChance) - 2000;
-            shooterRight.x = Math.floor(Math.random() * 441) + 30;
-        }
-        for (j = 0; j < rightShot.length; j += 1) {
-            if (rightShot[j].y < -10) {
-                rightShot.splice(j, 1)
-                ammoRight++
-                document.getElementById("ammocounter2").innerHTML = "Ammo: " + ammoRight + "/" + ammo
-            }
-        }
-        gameRight.clear();
-        for (k = 0; k < enemiesRight.length; k += 1) {
-            enemiesRight[k].y += eneSpeed;
-            enemiesRight[k].updateRight();
-        }
-        for (j = 0; j < rightShot.length; j += 1) {
-            if (shotsfired == true) {
-                rightShot[j].y += -3;
-                rightShot[j].updateRight();
-            }
-        }
-        for (m = 0; m < shooterRightShot.length; m += 1) {
-            shooterRightShot[m].y += shooterShotSpeed;
-            shooterRightShot[m].updateRight();
-        }
-        for (m = 0; m < shooterRightShot.length; m += 1) {
-            if (shooterLRightShot[m].y > 500)
-                shooterRightShot.splice(n, 1)
-        }
-        shooterRightMove()
-        shooterRight.x += shooterHorizontalSpeedRight;
-        shooterRight.y += shooterSpeed;
-        shooterRight.updateRight()
-        knightBordersRight();
-        knightRight.y += knightSpeed;
-        knightRight.x += knightHorizontalSpeedRight;
-        knightLeft.updateRight();
-        tankRight.y += tankSpeed;
-        tankRight.updateRight();
-        ghostRight.y += ghostSpeed;
-        ghostRight.updateRight();
-        rightBottom.updateRight();
-        playerRight.newPos();
-        playerRight.updateRight();
     }
+    shooterRightMove(), shooterRight.x += shooterHorizontalSpeedRight, shooterRight.y += shooterSpeed, shooterRight.updateRight()
+    knightBordersRight(), knightRight.y += knightSpeed, knightRight.x += knightHorizontalSpeedRight, knightRight.updateRight();
+    tankRight.y += tankSpeed, tankRight.updateRight();
+    ghostRight.y += ghostSpeed, ghostRight.updateRight();
+    rightBottom.updateRight();
+    playerRight.newPos(), playerRight.updateRight();
 }
 
 function shooterLeftMove() {
@@ -745,7 +623,6 @@ function end(ending) {
         }
     }
 }
-
 document.onkeydown = function movement(key) {
     if (gameStarted == true) {
         switch (key.keyCode) {
