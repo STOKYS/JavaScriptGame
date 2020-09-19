@@ -417,6 +417,8 @@ function updateGameArea() {
             if ((leftBottom.crashWith(enemiesLeft[i]) || playerLeft.crashWith(enemiesLeft[i])) && gameStarted == true) {
                 heartsLeft -= 1
                 document.getElementById("heartcounter1").innerHTML = "Hearts: " + heartsLeft + "/" + hearts;
+                enemiesLeft[i].y = -40;
+                enemiesLeft[i].x = Math.floor(Math.random() * 441) + 30;
             }
             for (u = 0; u < leftShot.length; u += 1) {
                 if (gameStarted == true && shotsfired == true && leftShot[u].crashWith(enemiesLeft[i])) {
@@ -452,6 +454,8 @@ function updateGameArea() {
             tankLeft.x = Math.floor(Math.random() * 441) + 30;
             tankHitLeft = tankHit;
         } else if (gameStarted == true && shotsfired == true && tankLeft.y > -50 && leftShot[u].crashWith(tankLeft) && tankHitLeft > 1) {
+            console.log(tankHitLeft)
+            leftShot.splice(u, 1)
             tankHitLeft--;
         }
         if ((leftShot[u].crashWith(tankLeft) && tankHitLeft == 0) || leftShot[u].crashWith(shooterLeft) || leftShot[u].crashWith(knightLeft) || leftShot[u].crashWith(ghostLeft)) {
@@ -520,6 +524,18 @@ function updateGameArea() {
     }
     leftBottom.updateLeft();
     playerLeft.newPos(), playerLeft.updateLeft();
+    if (playerLeft.x <= 0) {
+        playerLeft.x = 1
+    }
+    if (playerLeft.x >= 480) {
+        playerLeft.x = 480
+    }
+    if (playerLeft.y >= 485) {
+        playerLeft.y = 485
+    }
+    if (playerLeft.y <= 0) {
+        playerLeft.y = 0
+    }
     if (isBossLeft == true) {
         for (u = 0; u < leftShot.length; u += 1) {
             if (leftShot[u].crashWith(bossLeft)) {
@@ -527,7 +543,6 @@ function updateGameArea() {
                 ammoLeft++
                 document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft + "/" + ammo
                 bossLeftHP--
-                console.log(bossLeftHP)
                 document.getElementById("prg1").style.width = bossLeftHP / 2 + "%"
             }
         }
@@ -566,6 +581,8 @@ function updateGameArea() {
                 if ((rightBottom.crashWith(enemiesRight[g]) || playerRight.crashWith(enemiesRight[g])) && gameStarted == true) {
                     heartsRight -= 1
                     document.getElementById("heartcounter2").innerHTML = "Hearts: " + heartsRight + "/" + hearts;
+                    enemiesRight[g].y = -40;
+                    enemiesRight[g].x = Math.floor(Math.random() * 441) + 30;
                 }
                 for (r = 0; r < rightShot.length; r += 1) {
                     if (gameStarted == true && shotsfired == true && rightShot[r].crashWith(enemiesRight[g])) {
@@ -578,6 +595,7 @@ function updateGameArea() {
                         document.getElementById("scoreboard2").innerHTML = "Score: " + rightScore + "/" + pointsToWin;
                     }
                 }
+
                 enemiesRight[g].y += eneSpeed;
                 enemiesRight[g].updateRight();
             }
@@ -601,6 +619,7 @@ function updateGameArea() {
                 tankRight.x = Math.floor(Math.random() * 441) + 30;
                 tankHitRight = tankHit;
             } else if (gameStarted == true && shotsfired == true && tankRight.y > -50 && rightShot[r].crashWith(tankRight) && tankHitRight > 1) {
+                
                 tankHitRight--;
             }
             if (rightShot[r].crashWith(tankRight) && tankHitRight == 0 || rightShot[r].crashWith(shooterRight) || rightShot[r].crashWith(knightRight) || rightShot[r].crashWith(ghostRight)) {
@@ -669,6 +688,18 @@ function updateGameArea() {
         }
         rightBottom.updateRight();
         playerRight.newPos(), playerRight.updateRight();
+        if (playerRight.x <= 0) {
+            playerRight.x = 1
+        }
+        if (playerRight.x >= 480) {
+            playerRight.x = 480
+        }
+        if (playerRight.y >= 485) {
+            playerRight.y = 485
+        }
+        if (playerRight.y <= 0) {
+            playerRight.y = 0
+        }
         if (isBossRight == true) {
             for (u = 0; u < rightShot.length; u += 1) {
                 if (rightShot[u].crashWith(bossRight)) {
@@ -676,7 +707,6 @@ function updateGameArea() {
                     ammoRight++
                     document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoRight + "/" + ammo
                     bossRightHP--
-                    console.log(bossRightHP)
                     document.getElementById("prg1").style.width = bossRightHP / 2 + "%"
                 }
             }
