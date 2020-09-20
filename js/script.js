@@ -46,7 +46,8 @@ let hearts = 1,
     heartsRight = hearts;
 let gameStarted = false,
     shotsfired = false,
-    isMulti = false;
+    isMulti = false,
+    isBot = true;
 let bossLeft,
     bossRight,
     bossLeftHP = 200,
@@ -583,7 +584,7 @@ function updateGameArea() {
             bossLeft.y += .1
         } else if (bossLeft.y > 0) {
             if (bossLeftShot.length == 0) {
-                bossLeftShot.push(new component(3, 10, "black", playerLeft.x + 10, bossLeft.y + 20));
+                bossLeftShot.push(new component(3, 10, "red", playerLeft.x + 10, bossLeft.y + 20));
             }
             for (n = 0; n < bossLeftShot.length; n += 1) {
                 if (bossLeftShot[n].crashWith(playerLeft)) {
@@ -756,7 +757,7 @@ function updateGameArea() {
                 bossRight.y += .1
             } else if (bossRight.y > 0) {
                 if (bossRightShot.length == 0) {
-                    bossRightShot.push(new component(3, 10, "black", playerRight.x + 10, bossRight.y + 20));
+                    bossRightShot.push(new component(3, 10, "red", playerRight.x + 10, bossRight.y + 20));
                 }
                 for (n = 0; n < bossRightShot.length; n += 1) {
                     if (bossRightShot[n].crashWith(playerRight)) {
@@ -778,7 +779,7 @@ function updateGameArea() {
 
 function bossBattleLeft() {
     if (isBossLeft == false) {
-        bossLeft = new component(500, 50, "black", 0, -60);
+        bossLeft = new component(500, 50, "grey", 0, -60);
         isBossLeft = true;
         document.getElementById("prgbar1").style.display = "block"
     }
@@ -786,7 +787,7 @@ function bossBattleLeft() {
 
 function bossBattleRight() {
     if (isBossRight == false) {
-        bossRight = new component(500, 50, "black", 0, -60);
+        bossRight = new component(500, 50, "grey", 0, -60);
         isBossRight = true;
         document.getElementById("prgbar2").style.display = "block"
     }
@@ -801,7 +802,7 @@ function shooterLeftMove() {
         shooterHorizontalSpeedLeft = 0
         if (shooterLeft.y > -10) {
             if (shooterLeftShot.length == 0) {
-                shooterLeftShot.push(new component(3, 10, "black", shooterLeft.x + 15, shooterLeft.y + 20));
+                shooterLeftShot.push(new component(3, 10, "red", shooterLeft.x + 15, shooterLeft.y + 20));
             }
         }
 
@@ -817,7 +818,7 @@ function shooterRightMove() {
         shooterHorizontalSpeedRight = 0
         if (shooterRight.y > -10) {
             if (shooterRightShot.length == 0) {
-                shooterRightShot.push(new component(3, 10, "black", shooterRight.x + 15, shooterRight.y + 20));
+                shooterRightShot.push(new component(3, 10, "red", shooterRight.x + 15, shooterRight.y + 20));
             }
         }
     }
@@ -923,9 +924,9 @@ document.onkeydown = function movement(key) {
     } else if (key.keyCode == 32 && gameStarted != true) {
         startGame(2)
     } else if (key.keyCode == 16 && gameStarted != true) {
-        if(document.title == "JavaScriptGame"){
+        if (document.title == "JavaScriptGame") {
             window.location.href = 'server/index.html'
-        } else if(document.title == "JavaScriptGame Server"){
+        } else if (document.title == "JavaScriptGame Server") {
             window.location.href = '../index.html'
         }
     }
