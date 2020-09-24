@@ -47,7 +47,7 @@ let hearts = 1,
 let gameStarted = false,
     shotsfired = false,
     isMulti = false,
-    isBot = true;
+    isBot = false;
 let bossLeft,
     bossRight,
     bossLeftHP = 200,
@@ -61,6 +61,9 @@ let allowKnight = true,
     allowShooter = true,
     allowGhost = true,
     allowBoss = false;
+let cpp
+let trg1, trg2, trg3, trg4;
+let disabledTrg = 99;
 
 window.addEventListener("keydown", function (e) {
     if ([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
@@ -230,7 +233,7 @@ document.querySelectorAll("#btn1, #btn2, #btn3, #btn5, #btncustomheart").forEach
         document.getElementById("heartcounter2").innerHTML = "Hearts: " + heartsRight + "/" + hearts;
     })
 })
-document.querySelectorAll("#enableGhosts, #enableTanks, #enableKnights, #enableShooters, #enableBoss").forEach(item => {
+document.querySelectorAll("#enableGhosts, #enableTanks, #enableKnights, #enableShooters, #enableBoss, #enableBot").forEach(item => {
     item.addEventListener("click", event => {
         switch (item.id) {
             case "enableGhosts":
@@ -240,6 +243,8 @@ document.querySelectorAll("#enableGhosts, #enableTanks, #enableKnights, #enableS
                 } else {
                     allowGhost = true
                     document.getElementById("enableGhosts").innerHTML = "Ghosts: On"
+                    isBot = false
+                    document.getElementById("enableBot").innerHTML = "BOT: Off"
                 }
                 break;
             case "enableTanks":
@@ -249,6 +254,8 @@ document.querySelectorAll("#enableGhosts, #enableTanks, #enableKnights, #enableS
                 } else {
                     allowTank = true
                     document.getElementById("enableTanks").innerHTML = "Tanks: On"
+                    isBot = false
+                    document.getElementById("enableBot").innerHTML = "BOT: Off"
                 }
                 break;
             case "enableKnights":
@@ -258,6 +265,8 @@ document.querySelectorAll("#enableGhosts, #enableTanks, #enableKnights, #enableS
                 } else {
                     allowKnight = true
                     document.getElementById("enableKnights").innerHTML = "Knights: On"
+                    isBot = false
+                    document.getElementById("enableBot").innerHTML = "BOT: Off"
                 }
                 break;
             case "enableShooters":
@@ -267,6 +276,8 @@ document.querySelectorAll("#enableGhosts, #enableTanks, #enableKnights, #enableS
                 } else {
                     allowShooter = true
                     document.getElementById("enableShooters").innerHTML = "Shooters: On"
+                    isBot = false
+                    document.getElementById("enableBot").innerHTML = "BOT: Off"
                 }
                 break;
             case "enableBoss":
@@ -276,8 +287,28 @@ document.querySelectorAll("#enableGhosts, #enableTanks, #enableKnights, #enableS
                 } else {
                     allowBoss = true
                     document.getElementById("enableBoss").innerHTML = "Bosses: On"
+                    isBot = false
+                    document.getElementById("enableBot").innerHTML = "BOT: Off"
                 }
                 break;
+            case "enableBot":
+                if (isBot == true) {
+                    isBot = false
+                    document.getElementById("enableBot").innerHTML = "BOT: Off"
+                } else {
+                    isBot = true
+                    document.getElementById("enableBot").innerHTML = "BOT: On"
+                    allowBoss = false
+                    document.getElementById("enableBoss").innerHTML = "Bosses: Off"
+                    allowShooter = false
+                    document.getElementById("enableShooters").innerHTML = "Shooters: Off"
+                    allowKnight = false
+                    document.getElementById("enableKnights").innerHTML = "Knights: Off"
+                    allowTank = false
+                    document.getElementById("enableTanks").innerHTML = "Tanks: Off"
+                    allowGhost = false
+                    document.getElementById("enableGhosts").innerHTML = "Ghosts: Off"
+                }
         }
     })
 })
@@ -550,7 +581,12 @@ function updateGameArea() {
         leftShot[u].updateLeft();
     }
     leftBottom.updateLeft();
-    playerLeft.newPos(), playerLeft.updateLeft();
+    if (isBot == true) {
+        botLeft();
+    } else {
+        playerLeft.newPos()
+    }
+    playerLeft.updateLeft();
     if (playerLeft.x <= 0) {
         playerLeft.x = 1
     }
@@ -774,6 +810,48 @@ function updateGameArea() {
             }
             bossRight.updateRight()
         }
+    }
+}
+
+function botLeft() {
+    cpp = targetLeft(disabledTrg)
+    if ((((playerLeft.x - enemiesLeft[cpp].x) == -1) || ((playerLeft.x - enemiesLeft[cpp].x) == 1) || ((playerLeft.x - enemiesLeft[cpp].x) == 0)) && leftShot.length < ammo) {
+        shotsfired = true;
+        leftShot.push(new component(3, 10, "blue", playerLeft.x + 10, playerLeft.y - 10));
+        ammoLeft--;
+        document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft + "/" + ammo;
+        disabledTrg = cpp
+        botLeft()
+    } else if (playerLeft.x > enemiesLeft[cpp].x) {
+        playerLeft.x -= 2
+    } else if (playerLeft.x < enemiesLeft[cpp].x) {
+        playerLeft.x += 2
+    }
+    for (i = 0; i < enemiesLeft.length; i += 1) {
+        if ((((playerLeft.x - enemiesLeft[i].x) == -1) || ((playerLeft.x - enemiesLeft[i].x) == 1) || ((playerLeft.x - enemiesLeft[i].x) == 0)) && leftShot.length < ammo) {
+            shotsfired = true;
+            leftShot.push(new component(3, 10, "blue", playerLeft.x + 10, playerLeft.y - 10));
+            ammoLeft--;
+            document.getElementById("ammocounter1").innerHTML = "Ammo: " + ammoLeft + "/" + ammo;
+        }
+    }
+}
+
+function targetLeft(disabledTrg) {
+    if ((enemiesLeft[0].y > (enemiesLeft[1].y && enemiesLeft[2].y && enemiesLeft[3].y)) && disabledTrg != 0) {
+        console.log("Target: 0:" + enemiesLeft[0].y + ", " + enemiesLeft[1].y + ", " + enemiesLeft[2].y + " " + enemiesLeft[3].y)
+        return "0"
+    } else if ((enemiesLeft[1].y > (enemiesLeft[0].y && enemiesLeft[2].y && enemiesLeft[3].y)) && disabledTrg != 1) {
+        console.log("Target: 1:" + enemiesLeft[1].y + ", " + enemiesLeft[0].y + ", " + enemiesLeft[2].y + " " + enemiesLeft[3].y)
+        return "1"
+    } else if ((enemiesLeft[2].y > (enemiesLeft[1].y && enemiesLeft[0].y && enemiesLeft[3].y)) && disabledTrg != 2) {
+        console.log("Target: 2:" + enemiesLeft[2].y + ", " + enemiesLeft[0].y + ", " + enemiesLeft[1].y + " " + enemiesLeft[3].y)
+        return "2"
+    } else if ((enemiesLeft[3].y > (enemiesLeft[1].y && enemiesLeft[2].y && enemiesLeft[0].y)) && disabledTrg != 3) {
+        console.log("Target: 3:" + enemiesLeft[3].y + ", " + enemiesLeft[0].y + ", " + enemiesLeft[1].y + " " + enemiesLeft[2].y)
+        return "3"
+    } else {
+        return "0"
     }
 }
 
